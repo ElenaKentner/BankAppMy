@@ -94,7 +94,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="product_id" type="integer">
-                <constraints foreignKeyName="product_id" references="products(id)" nullable="false"/>
+                <constraints foreignKeyName="credit_orders_product_id" references="products(id)" nullable="false"/>
             </column>
             <column name="status" type="varchar(30)">
                 <constraints nullable="false"/>
@@ -131,7 +131,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="order_id" type="uuid">
-                <constraints foreignKeyName="order_id" references="credit_orders(id)"
+                <constraints foreignKeyName="cfredits_order_id" references="credit_orders(id)"
                              unique="true" nullable="false"/>
             </column>
             <column name="type" type="varchar(30)">
@@ -170,7 +170,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="credit_id" type="uuid">
-                <constraints foreignKeyName="credit_id" references="credits(id)" unique="true" nullable="false"/>
+                <constraints foreignKeyName="agreements_credit_id" references="credits(id)" unique="true" nullable="false"/>
             </column>
             <column name="number" type="varchar(20)">
                 <constraints nullable="false" unique="true"/>
@@ -201,7 +201,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="credit_id" type="uuid">
-                <constraints foreignKeyName="credit_id" references="credits(id)" unique="true" nullable="false"/>
+                <constraints foreignKeyName="accounts_credit_id" references="credits(id)" unique="true" nullable="false"/>
             </column>
             <column name="account_number" type="varchar(30)">
                 <constraints nullable="false" unique="true"/>
@@ -245,7 +245,7 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="account_id" type="uuid">
-                <constraints foreignKeyName="account_id" references="accounts(id)" unique="true" nullable="false"/>
+                <constraints foreignKeyName="cards_account_id" references="accounts(id)" unique="true" nullable="false"/>
             </column>
             <column name="holder_name" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -287,7 +287,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="account_id" type="uuid">
-                <constraints foreignKeyName="account_id" nullable="false" references="accounts(id)" />
+                <constraints foreignKeyName="payment_schedules_account_id" nullable="false" references="accounts(id)" />
             </column>
             <column name="payment_date" type="date">
                 <constraints nullable="false"/>
@@ -331,16 +331,16 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="account_id" type="uuid">
-                <constraints foreignKeyName="account_id" references="accounts(id)" nullable="false"/>
+                <constraints foreignKeyName="operations_account_id" references="accounts(id)" nullable="false"/>
             </column>
             <column name="operation_type_id" type="uuid">
-                <constraints foreignKeyName="operation_type_id" references="operation_types(id)"
+                <constraints foreignKeyName="operations_operation_type_id" references="operation_types(id)"
                              nullable="false"/>
             </column>
             <column name="sum" type="numeric(19, 4)">
                 <constraints nullable="false"/>
             </column>
-            <column name="completed_at" type="timestamp with time zone">
+            <column name="completed_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
             <column name="details" type="text"/>
