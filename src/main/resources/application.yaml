@@ -1,1 +1,17 @@
+spring:
+  main:
+    banner-mode: off
 
+  datasource:
+    url: jdbc:mysql://localhost:3306/bankapp
+    username: bankapp
+    password: dfgdfgASR123@!
+
+  jpa:
+    defer-datasource-initialization: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.xml

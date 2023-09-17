@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="m.egorov" id="drop products table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="products"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="products"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="drop credit_orders table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="credit_orders"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="credit_orders"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="drop credits table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="credits"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="credits"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

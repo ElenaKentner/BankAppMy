@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="m.egorov" id="create products table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table products already exists">
+            <not>
+                <tableExists tableName="products"/>
+            </not>
+        </preConditions>
+        <createTable tableName="products">
+            <column name="id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="min_sum" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_sum" type="numeric(19, 4)">
+                <constraints nullable="false" checkConstraint="CHECK (max_sum >= min_sum)"/>
+            </column>
+            <column name="currency_code" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_interest_rate" type="numeric(6, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_interest_rate" type="numeric(6, 4)">
+                <constraints nullable="false" checkConstraint="CHECK (max_interest_rate >= min_interest_rate)"/>
+            </column>
+            <column name="need_guarantees" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_in_cash" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="early_repayment" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="need_income_details" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_period_months" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_period_months" type="integer">
+                <constraints nullable="false" checkConstraint="CHECK (ax_period_months >= min_period_months)"/>
+            </column>
+            <column name="is_active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="details" type="varchar(255)"/>
+            <column name="calculation_mode" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="grace_period_months" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rate_is_adjustable" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rate_base" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rate_fix_part" type="numeric(6, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="increased_rate" type="numeric(6, 4)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create credit_orders table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table credit_orders already exists">
+            <not>
+                <tableExists tableName="credit_orders"/>
+            </not>
+        </preConditions>
+        <createTable tableName="credit_orders">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="client_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="integer">
+                <constraints foreignKeyName="product_id" references="products(id)" nullable="false"/>
+            </column>
+            <column name="status" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="period_months" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_income" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_expenditure" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employer_identification_number" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create credits table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table credits already exists">
+            <not>
+                <tableExists tableName="credits"/>
+            </not>
+        </preConditions>
+        <createTable tableName="credits">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="uuid">
+                <constraints foreignKeyName="order_id" references="credit_orders(id)"
+                             unique="true" nullable="false"/>
+            </column>
+            <column name="type" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="credit_limit" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_code" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_rate" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="personal_guarantees" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="grace_period_months" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="late_payment_rate" type=" numeric(6, 4)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create agreements table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table agreements already exists">
+            <not>
+                <tableExists tableName="agreements"/>
+            </not>
+        </preConditions>
+        <createTable tableName="agreements">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="credit_id" type="uuid">
+                <constraints foreignKeyName="credit_id" references="credits(id)" unique="true" nullable="false"/>
+            </column>
+            <column name="number" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="agreement_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="termination_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="responsible_specialist_id" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create accounts table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table accounts already exists">
+            <not>
+                <tableExists tableName="accounts"/>
+            </not>
+        </preConditions>
+        <createTable tableName="accounts">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="credit_id" type="uuid">
+                <constraints foreignKeyName="credit_id" references="credits(id)" unique="true" nullable="false"/>
+            </column>
+            <column name="account_number" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="principal_debt" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_debt" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opening_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="closing_date" type="date"/>
+            <column name="currency_code" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="outstanding_principal" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="outstanding_interest_debt" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create cards table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table cards already exists">
+            <not>
+                <tableExists tableName="cards"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cards">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="card_number" type="char(16)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="account_id" type="uuid">
+                <constraints foreignKeyName="account_id" references="accounts(id)" unique="true" nullable="false"/>
+            </column>
+            <column name="holder_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_system" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_point" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_limit" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_digital_wallet" type="boolean"/>
+            <column name="is_virtual" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="co_brand" type="varchar(30)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create payment_schedules table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table payment_schedules already exists">
+            <not>
+                <tableExists tableName="payment_schedules"/>
+            </not>
+        </preConditions>
+        <createTable tableName="payment_schedules">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_id" type="uuid">
+                <constraints foreignKeyName="account_id" nullable="false" references="accounts(id)" />
+            </column>
+            <column name="payment_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create operation_types table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table operation_types already exists">
+            <not>
+                <tableExists tableName="operation_types"/>
+            </not>
+        </preConditions>
+        <createTable tableName="operation_types">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="is_debit" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="create operations table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table operations already exists">
+            <not>
+                <tableExists tableName="operations"/>
+            </not>
+        </preConditions>
+        <createTable tableName="operations">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_id" type="uuid">
+                <constraints foreignKeyName="account_id" references="accounts(id)" nullable="false"/>
+            </column>
+            <column name="operation_type_id" type="uuid">
+                <constraints foreignKeyName="operation_type_id" references="operation_types(id)"
+                             nullable="false"/>
+            </column>
+            <column name="sum" type="numeric(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completed_at" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="details" type="text"/>
+            <column name="currency_code" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

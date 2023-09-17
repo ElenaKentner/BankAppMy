@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-283-create-tables-changelog.xml"/>
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-283-drop-tables-changelog.xml"/>
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-283_insert_test_data_changelog_1.xml"/>
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-283_insert_test_data_changelog_2.xml"/>
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-283_insert_test_data_changelog_3.xml"/>
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-283_insert_test_data_changelog_4.xml"/>
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-283-create-sequence.xml"/>
+    <include file="db/changelog/changes/v0.0.1-SNAPSHOT/RTN-286_insert_payment_schedule_test_data_changelog.xml"/>
+
+</databaseChangeLog>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="m.egorov" id="insert test data into products table">
+        <insert tableName="products">
+            <column name="id" value="3"/>
+            <column name="name" value="mortgage"/>
+            <column name="min_sum" value="10000"/>
+            <column name="max_sum" value="2000000"/>
+            <column name="currency_code" value="USD"/>
+            <column name="min_interest_rate" value="2"/>
+            <column name="max_interest_rate" value="3"/>
+            <column name="need_guarantees" value="false"/>
+            <column name="delivery_in_cash" value="false"/>
+            <column name="early_repayment" value="false"/>
+            <column name="need_income_details" value="false"/>
+            <column name="min_period_months" value="33"/>
+            <column name="max_period_months" value="87"/>
+            <column name="is_active" value="true"/>
+            <column name="details" value="text1"/>
+            <column name="calculation_mode" value="ANNUITY"/>
+            <column name="grace_period_months" value="12"/>
+            <column name="rate_is_adjustable" value="false"/>
+            <column name="rate_base" value="425"/>
+            <column name="rate_fix_part" value="1"/>
+            <column name="increased_rate" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into credit_orders table">
+        <insert tableName="credit_orders">
+            <column name="id" value="123e4567-e89b-12d3-a456-426655440000"/>
+            <column name="number" value="12"/>
+            <column name="client_id" value="a60266cb-1814-4285-83ef-bb55a4849af5"/>
+            <column name="product_id" value="3"/>
+            <column name="status" value="ACCEPTED"/>
+            <column name="amount" value="2"/>
+            <column name="period_months" value="35"/>
+            <column name="creation_date" value="2022-02-22"/>
+            <column name="monthly_income" value="2200"/>
+            <column name="monthly_expenditure" value="42"/>
+            <column name="employer_identification_number" value="1231231"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into credits table">
+        <insert tableName="credits">
+            <column name="id" value="11111111-2222-3333-4444-555566667777"/>
+            <column name="order_id" value="123e4567-e89b-12d3-a456-426655440000"/>
+            <column name="type" value="MORTGAGE"/>
+            <column name="credit_limit" value="600000"/>
+            <column name="currency_code" value="USD"/>
+            <column name="interest_rate" value="1"/>
+            <column name="personal_guarantees" value="false"/>
+            <column name="grace_period_months" value="12"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="late_payment_rate" value="12"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into agreements table">
+        <insert tableName="agreements">
+            <column name="id" value="523e4567-e89b-12d3-a456-426655440000"/>
+            <column name="credit_id" value="11111111-2222-3333-4444-555566667777"/>
+            <column name="number" value="115420"/>
+            <column name="agreement_date" value="2022-02-23"/>
+            <column name="termination_date" value="2025-02-22"/>
+            <column name="responsible_specialist_id" value="5676345"/>
+            <column name="is_active" value="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into accounts table">
+        <insert tableName="accounts">
+            <column name="id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="credit_id" value="11111111-2222-3333-4444-555566667777"/>
+            <column name="account_number" value="757557"/>
+            <column name="principal_debt" value="150000"/>
+            <column name="interest_debt" value="10000"/>
+            <column name="is_active" value="true"/>
+            <column name="opening_date" value="2022-02-22"/>
+            <column name="closing_date" value="2024-04-04"/>
+            <column name="currency_code" value="USD"/>
+            <column name="outstanding_principal" value="1000"/>
+            <column name="outstanding_interest_debt" value="100"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into cards table">
+        <insert tableName="cards">
+            <column name="id" value="923e4567-e89b-12d3-a456-426655440000"/>
+            <column name="card_number" value="9483748374149384"/>
+            <column name="account_id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="holder_name" value="Mikhail"/>
+            <column name="expiration_date" value="2024-03-03"/>
+            <column name="payment_system" value="VISA"/>
+            <column name="balance" value="350000"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="delivery_point" value="point6"/>
+            <column name="transaction_limit" value="10000"/>
+            <column name="is_digital_wallet" value="true"/>
+            <column name="is_virtual" value="true"/>
+            <column name="co_brand" value="yes"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into payment_schedules table">
+        <insert tableName="payment_schedules">
+            <column name="id" value="133e4567-e89b-12d3-a456-426655440000"/>
+            <column name="account_id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="payment_date" value="2022-03-20"/>
+            <column name="principal" value="1000"/>
+            <column name="interest" value="100"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into operation_types table">
+        <insert tableName="operation_types">
+            <column name="id" value="153e4567-e89b-12d3-a456-426655440000"/>
+            <column name="type" value="PAYMENT"/>
+            <column name="is_debit" value="false"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="m.egorov" id="insert test data into operations table">
+        <insert tableName="operations">
+            <column name="id" value="163e4567-e89b-12d3-a456-426655440000"/>
+            <column name="account_id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="operation_type_id" value="153e4567-e89b-12d3-a456-426655440000"/>
+            <column name="sum" value="123"/>
+            <column name="completed_at" value="2012-02-02"/>
+            <column name="details" value="text"/>
+            <column name="currency_code" value="USD"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

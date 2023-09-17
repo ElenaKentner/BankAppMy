@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="y.valadzko" id="insert test data into payment_schedules table 1">
+        <insert tableName="payment_schedules">
+            <column name="id" value="133e4999-e89b-12d3-a456-420055840000"/>
+            <column name="account_id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="payment_date" value="2022-04-20"/>
+            <column name="principal" value="1000"/>
+            <column name="interest" value="100"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="y.valadzko" id="insert test data into payment_schedules table 2">
+        <insert tableName="payment_schedules">
+            <column name="id" value="133e4999-e89b-12d3-a456-411055840000"/>
+            <column name="account_id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="payment_date" value="2022-05-20"/>
+            <column name="principal" value="1000"/>
+            <column name="interest" value="100"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="y.valadzko" id="insert test data into payment_schedules table 3">
+        <insert tableName="payment_schedules">
+            <column name="id" value="133e4999-e89b-12d3-a116-411055840000"/>
+            <column name="account_id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="payment_date" value="2022-06-20"/>
+            <column name="principal" value="1000"/>
+            <column name="interest" value="100"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="y.valadzko" id="insert test data into payment_schedules table 4">
+        <insert tableName="payment_schedules">
+            <column name="id" value="133e4999-e22b-12d3-a456-411055840000"/>
+            <column name="account_id" value="aaaabbbb-0000-9999-8888-777766665555"/>
+            <column name="payment_date" value="2022-07-20"/>
+            <column name="principal" value="1000"/>
+            <column name="interest" value="100"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
