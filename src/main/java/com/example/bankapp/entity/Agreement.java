@@ -19,6 +19,7 @@ import java.util.UUID;
 @Table(name = "agreements")
 
 public class Agreement {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID id;

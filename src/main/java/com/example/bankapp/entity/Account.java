@@ -16,6 +16,7 @@ import java.util.UUID;
 @ToString
 
 public class Account {
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
