@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1695674833874-1" author="elenavasileva (generated)">
+        <createTable tableName="accounts">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_accounts"/>
+            </column>
+            <column name="client_id" type="binary(16)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="currency_code" type="INT"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="balance" type="DOUBLE"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1695674833874-2" author="elenavasileva (generated)">
+        <createTable tableName="agreements">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_agreements"/>
+            </column>
+            <column name="account_id" type="binary(16)"/>
+            <column name="product_id" type="binary(16)"/>
+            <column name="interest_rate" type="DOUBLE"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="limit" type="INT"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1695674833874-3" author="elenavasileva (generated)">
+        <createTable tableName="clients">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_clients"/>
+            </column>
+            <column name="manager_id" type="binary(16)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="tax_code" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1695674833874-4" author="elenavasileva (generated)">
+        <createTable tableName="managers">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_managers"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1695674833874-5" author="elenavasileva (generated)">
+        <createTable tableName="products">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_products"/>
+            </column>
+            <column name="manager_id" type="binary(16)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="currency_code" type="INT"/>
+            <column name="interest_rate" type="DOUBLE"/>
+            <column name="limit" type="DOUBLE"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1695674833874-6" author="elenavasileva (generated)">
+        <createTable tableName="transactions">
+            <column name="id" type="binary(16)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_transactions"/>
+            </column>
+            <column name="debit_account_id" type="binary(16)"/>
+            <column name="credit_account_id" type="binary(16)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="amount" type="DOUBLE"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="updated_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1695674833874-7" author="elenavasileva (generated)">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="accounts"
+                                 constraintName="FK_ACCOUNTS_ON_CLIENT" referencedColumnNames="id"
+                                 referencedTableName="clients"/>
+    </changeSet>
+    <changeSet id="1695674833874-8" author="elenavasileva (generated)">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="agreements"
+                                 constraintName="FK_AGREEMENTS_ON_ACCOUNT" referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+    <changeSet id="1695674833874-9" author="elenavasileva (generated)">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="agreements"
+                                 constraintName="FK_AGREEMENTS_ON_PRODUCT" referencedColumnNames="id"
+                                 referencedTableName="products"/>
+    </changeSet>
+    <changeSet id="1695674833874-10" author="elenavasileva (generated)">
+        <addForeignKeyConstraint baseColumnNames="manager_id" baseTableName="clients"
+                                 constraintName="FK_CLIENTS_ON_MANAGER" referencedColumnNames="id"
+                                 referencedTableName="managers"/>
+    </changeSet>
+    <changeSet id="1695674833874-11" author="elenavasileva (generated)">
+        <addForeignKeyConstraint baseColumnNames="manager_id" baseTableName="products"
+                                 constraintName="FK_PRODUCTS_ON_MANAGER" referencedColumnNames="id"
+                                 referencedTableName="managers"/>
+    </changeSet>
+    <changeSet id="1695674833874-12" author="elenavasileva (generated)">
+        <addForeignKeyConstraint baseColumnNames="credit_account_id" baseTableName="transactions"
+                                 constraintName="FK_TRANSACTIONS_ON_CREDIT_ACCOUNT" referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+    <changeSet id="1695674833874-13" author="elenavasileva (generated)">
+        <addForeignKeyConstraint baseColumnNames="debit_account_id" baseTableName="transactions"
+                                 constraintName="FK_TRANSACTIONS_ON_DEBIT_ACCOUNT" referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -22,6 +22,8 @@ public class Manager {
     @Column(name = "id")
     private UUID id;
 
+    @ToString.Exclude
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "first_name")
     @NonNull
     private String firstName;
