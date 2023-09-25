@@ -22,9 +22,10 @@ public class Product {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "manager_id")
+    @JoinColumn(name = "manager_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
-    private Integer managerId;
+    private Manager managerId;
 
     @Column(name = "name")
     @NonNull
@@ -55,7 +56,7 @@ public class Product {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productId")
     private List<Agreement> agreements;
 
     @Override

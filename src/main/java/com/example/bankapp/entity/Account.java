@@ -22,7 +22,7 @@ public class Account {
     @JoinColumn(name = "client_id")
     @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
-    private Client client;
+    private Client clientId;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -53,13 +53,13 @@ public class Account {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "accountId")
     private List<Agreement> agreements;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "debitAccount")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "debitAccountId")
     private List<Transaction> debitTransactions;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creditAccount")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creditAccountId")
     private List<Transaction> creditTransactions;
 
 

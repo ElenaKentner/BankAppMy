@@ -64,7 +64,7 @@ public class Client {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientId")
     private List<Account> accounts;
 
     @Override

@@ -5,14 +5,16 @@ import com.example.bankapp.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class ManagerServiceImpl implements ManagerService {
     private final ManagerRepository managerRepository;
 
     @Override
-    public void deleteManagerByName(String name) {
-        managerRepository.deleteByName(name);
+    public void deleteManagerById(UUID id) {
+        managerRepository.deleteById(id);
     }
 }
 

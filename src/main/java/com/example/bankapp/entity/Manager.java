@@ -43,11 +43,11 @@ public class Manager {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
-    private List<Account> accounts;
+    @OneToMany(mappedBy = "managerId", fetch = FetchType.LAZY)
+    private List<Client> client;
 
-    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
-    private List<Agreement> agreements;
+    @OneToMany(mappedBy = "managerId", fetch = FetchType.LAZY)
+    private List<Product> product;
 
     @Override
     public boolean equals(Object o) {
