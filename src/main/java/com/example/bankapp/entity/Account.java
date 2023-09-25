@@ -3,49 +3,65 @@ package com.example.bankapp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
-@Entity
-@Table(name = "accounts")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 
+@Entity
+@Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "client_id")
-    private int clientId;
+    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @NonNull
+    private Client client;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NonNull
     private Status status;
 
     @Column(name = "currency_code")
-    private int currencyCode;
+    @NonNull
+    private Integer currencyCode;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private Type type;
 
     @Column(name = "balance")
-    private double balance;
+    @NonNull
+    private Double balance;
 
     @Column(name = "name")
+    @NonNull
     private String name;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private Date updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+    private List<Agreement> agreements;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "debitAccount")
+    private List<Transaction> debitTransactions;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creditAccount")
+    private List<Transaction> creditTransactions;
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,20 +1,18 @@
 package com.example.bankapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-
 
 @Entity
 @Table(name = "products")
@@ -25,36 +23,47 @@ public class Product {
     private UUID id;
 
     @Column(name = "manager_id")
-    private int managerId;
+    @NonNull
+    private Integer managerId;
 
     @Column(name = "name")
+    @NonNull
     private String name;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NonNull
     private Status status;
 
     @Column(name = "currency_code")
-    private int currencyCode;
+    @NonNull
+    private Integer currencyCode;
 
     @Column(name = "interest_rate")
-    private double interestRate;
+    @NonNull
+    private Double interestRate;
 
     @Column(name = "limit")
-    private double limit;
+    @NonNull
+    private Double limit;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private Date updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<Agreement> agreements;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id && managerId == product.managerId && Objects.equals(name, product.name);
+        return Objects.equals(id, product.id) && Objects.equals(managerId, product.managerId) && Objects.equals(name, product.name);
     }
 
     @Override

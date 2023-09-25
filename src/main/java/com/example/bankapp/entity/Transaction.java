@@ -1,18 +1,16 @@
 package com.example.bankapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 
 @Entity
@@ -23,27 +21,36 @@ public class Transaction {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "debit_account_id")
-    private int debitAccountId;
+    @JoinColumn(name = "debit_account_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @NonNull
+    private Account debitAccountId;
 
-    @Column(name = "credit_account_id")
-    private int creditAccountId;
+    @JoinColumn(name = "credit_account_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @NonNull
+    private Account creditAccountId;
 
-    @Column(name = "type")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Type type;
+    @NonNull
+    private Status status;
 
     @Column(name = "amount")
-    private double amount;
+    @NonNull
+    private Double amount;
 
     @Column(name = "description")
+    @NonNull
     private String description;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
 
-    public Transaction() {
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     @Override
     public boolean equals(Object o) {

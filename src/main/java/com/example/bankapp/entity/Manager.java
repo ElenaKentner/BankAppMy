@@ -1,20 +1,18 @@
 package com.example.bankapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-
 
 @Entity
 @Table(name = "managers")
@@ -24,22 +22,32 @@ public class Manager {
     @Column(name = "id")
     private UUID id;
 
-
     @Column(name = "first_name")
+    @NonNull
     private String firstName;
 
     @Column(name = "last_name")
+    @NonNull
     private String lastName;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @NonNull
     private Status status;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private String description;
+    private Date createdAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private LocalDate createdAt;
+    private Date updatedAt;
+
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
+    private List<Account> accounts;
+
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
+    private List<Agreement> agreements;
 
     @Override
     public boolean equals(Object o) {
