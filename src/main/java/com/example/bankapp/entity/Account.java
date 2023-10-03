@@ -3,7 +3,10 @@ package com.example.bankapp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -75,4 +78,5 @@ public class Account {
     public int hashCode() {
         return Objects.hash(id, status, name);
     }
+
 }
