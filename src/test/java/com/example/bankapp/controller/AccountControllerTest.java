@@ -1,76 +1,98 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dto.AccountDTO;
 import com.example.bankapp.entity.Account;
 import com.example.bankapp.service.AccountService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(AccountController.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @InjectMocks
+    private AccountController accountController;
 
-    @Autowired
+    @Mock
     private AccountService accountService;
 
     @Test
-    public void testGetAccountById() throws Exception {
-        UUID accountId = UUID.randomUUID();
-        Account account = new Account();
-        account.setId(accountId);
-        account.setName("Test Account");
+    public void testCreateAccount() {
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setClientId(UUID.randomUUID());
 
-       when(accountService.getAccountById(accountId)).thenReturn(account);
+        Account createdAccount = new Account();
 
-        mockMvc.perform(get("/accounts/{id}", accountId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(accountId.toString())))
-                .andExpect(jsonPath("$.name", is("Test Account")));
+        when(accountService.createAccount(any(AccountDTO.class))).thenReturn(createdAccount);
+
+        ResponseEntity<AccountDTO> responseEntity = accountController.createAccount(accountDTO);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+
+        verify(accountService, times(1)).createAccount(any(AccountDTO.class));
     }
 
     @Test
-    public void testGetAccountById_NotFound() throws Exception {
-        UUID accountId = UUID.randomUUID();
+    public void testCreateAccountWithNullDTO() {
+        ResponseEntity<AccountDTO> responseEntity = accountController.createAccount(null);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 
-        when(accountService.getAccountById(accountId)).thenReturn(null);
-
-        mockMvc.perform(get("/accounts/{id}", accountId))
-                .andExpect(status().isNotFound());
+        verifyNoMoreInteractions(accountService);
     }
 
     @Test
-    public void testCreateAccount() throws Exception {
-        Account newAccount = new Account();
-        newAccount.setName("New Account");
+    public void testCreateAccountServiceFailure() {
+        when(accountService.createAccount(any(AccountDTO.class))).thenReturn(null);
 
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setClientId(UUID.randomUUID());
 
+        ResponseEntity<AccountDTO> responseEntity = accountController.createAccount(accountDTO);
 
-        mockMvc.perform(post("/accounts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(newAccount)))
-                .andExpect(status().isCreated());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+
+        verify(accountService, times(1)).createAccount(any(AccountDTO.class));
+        verifyNoMoreInteractions(accountService);
     }
 
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @Test
+    public void testCreateAccountWithMissingClientId() {
+        AccountDTO accountDTO = new AccountDTO();
+
+        ResponseEntity<AccountDTO> responseEntity = accountController.createAccount(accountDTO);
+
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+
+        verifyNoMoreInteractions(accountService);
     }
+
+    @Test
+    public void testCreateAccountWithExistingClient() {
+        when(accountService.createAccount(any(AccountDTO.class))).thenThrow(EntityExistsException.class);
+
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setClientId(UUID.randomUUID());
+
+        ResponseEntity<AccountDTO> responseEntity = accountController.createAccount(accountDTO);
+
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+
+        verify(accountService, times(1)).createAccount(any(AccountDTO.class));
+        verifyNoMoreInteractions(accountService);
+    }
+
 }
+

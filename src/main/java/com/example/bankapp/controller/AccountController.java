@@ -24,6 +24,7 @@ public class AccountController {
         AccountDTO createdAccountDTO = new AccountDTO();
         createdAccountDTO.setId(createdAccount.getId());
         createdAccountDTO.setClientId(createdAccount.getClientId().getId());
+        createdAccountDTO.setStatus(createdAccount.getStatus());
         createdAccountDTO.setCurrencyCode(createdAccount.getCurrencyCode());
         createdAccountDTO.setType(createdAccount.getType());
         createdAccountDTO.setBalance(createdAccount.getBalance());
