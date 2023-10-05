@@ -3,12 +3,28 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
-    <changeSet id="drop-tables" author="elenavasileva">
-        <dropTable tableName="accounts"/>
+    <changeSet id="drop-tables-agreements" author="elenavasileva">
+        <preConditions onFail="MARK_RAN"><tableExists tableName="agreements"/></preConditions>
         <dropTable tableName="agreements"/>
-        <dropTable tableName="clients"/>
-        <dropTable tableName="managers"/>
+    </changeSet>
+    <changeSet id="drop-tables-products" author="elenavasileva">
+        <preConditions onFail="MARK_RAN"><tableExists tableName="products"/></preConditions>
         <dropTable tableName="products"/>
+    </changeSet>
+    <changeSet id="drop-tables-transactions" author="elenavasileva">
+        <preConditions onFail="MARK_RAN"><tableExists tableName="transactions"/></preConditions>
         <dropTable tableName="transactions"/>
+    </changeSet>
+    <changeSet id="drop-tables-accounts" author="elenavasileva">
+        <preConditions onFail="MARK_RAN"><tableExists tableName="accounts"/></preConditions>
+        <dropTable tableName="accounts"/>
+    </changeSet>
+    <changeSet id="drop-tables-clients" author="elenavasileva">
+        <preConditions onFail="MARK_RAN"><tableExists tableName="clients"/></preConditions>
+        <dropTable tableName="clients"/>
+    </changeSet>
+    <changeSet id="drop-tables-managers" author="elenavasileva">
+        <preConditions onFail="MARK_RAN"><tableExists tableName="managers"/></preConditions>
+        <dropTable tableName="managers"/>
     </changeSet>
 </databaseChangeLog>
