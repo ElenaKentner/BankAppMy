@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -64,7 +66,7 @@ public class Client {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientId")
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "clientId")
     private List<Account> accounts;
 
     @Override

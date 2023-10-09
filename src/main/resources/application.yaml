@@ -12,7 +12,10 @@ spring:
     open-in-view: false
     properties:
       hibernate:
+        type: uuid-char
+        ddl-auto: update
         dialect: org.hibernate.dialect.MySQL57Dialect
 
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.xml
+    drop-first: true

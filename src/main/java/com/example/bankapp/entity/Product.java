@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -56,7 +58,7 @@ public class Product {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productId")
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "productId")
     private List<Agreement> agreements;
 
     @Override

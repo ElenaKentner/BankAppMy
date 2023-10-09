@@ -3,10 +3,9 @@ package com.example.bankapp.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+
+import static jakarta.persistence.CascadeType.ALL;
 
 @Getter
 @Setter
@@ -56,14 +55,25 @@ public class Account {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "accountId")
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "accountId")
     private List<Agreement> agreements;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "debitAccountId")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = ALL)
+    @JoinTable(
+            name = "account_debit_transactions",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    )
     private List<Transaction> debitTransactions;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creditAccountId")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = ALL)
+    @JoinTable(
+            name = "account_credit_transactions",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    )
     private List<Transaction> creditTransactions;
+
 
 
     @Override
