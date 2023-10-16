@@ -15,7 +15,7 @@ import static com.example.bankapp.util.UUIDValidator.isValidUUID;
 public class ManagerController {
     private final ManagerService managerService;
 
-    @DeleteMapping("/deleteById")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@RequestParam String id) {
         if (!isValidUUID(id)) {
             return ResponseEntity.badRequest().build();

@@ -12,12 +12,12 @@
             </column>
             <column name="client_id" type="binary(16)"/>
             <column name="status" type="VARCHAR(255)"/>
-            <column name="currency_code" type="INT"/>
+            <column name="currency_code" type="VARCHAR(3)"/>
             <column name="type" type="VARCHAR(255)"/>
-            <column name="balance" type="DOUBLE"/>
+            <column name="balance" type="DECIMAL(15, 2)"/>
             <column name="name" type="VARCHAR(255)"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="updated_at" type="DATETIME"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet id="1695674833874-2" author="elenavasileva (generated)">
@@ -27,11 +27,9 @@
             </column>
             <column name="account_id" type="binary(16)"/>
             <column name="product_id" type="binary(16)"/>
-            <column name="interest_rate" type="DOUBLE"/>
-            <column name="status" type="VARCHAR(255)"/>
-            <column name="limit" type="INT"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="updated_at" type="DATETIME"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet id="1695674833874-3" author="elenavasileva (generated)">
@@ -47,8 +45,8 @@
             <column name="email" type="VARCHAR(255)"/>
             <column name="address" type="VARCHAR(255)"/>
             <column name="phone" type="VARCHAR(255)"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="updated_at" type="DATETIME"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet id="1695674833874-4" author="elenavasileva (generated)">
@@ -59,8 +57,8 @@
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="status" type="VARCHAR(255)"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="updated_at" type="DATETIME"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet id="1695674833874-5" author="elenavasileva (generated)">
@@ -71,11 +69,11 @@
             <column name="manager_id" type="binary(16)"/>
             <column name="name" type="VARCHAR(255)"/>
             <column name="status" type="VARCHAR(255)"/>
-            <column name="currency_code" type="INT"/>
-            <column name="interest_rate" type="DOUBLE"/>
-            <column name="limit" type="DOUBLE"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="updated_at" type="DATETIME"/>
+            <column name="currency_code" type="VARCHAR(3)"/>
+            <column name="interest_rate" type="DECIMAL(6, 4)"/>
+            <column name="min_limit" type="INT"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet id="1695674833874-6" author="elenavasileva (generated)">
@@ -86,10 +84,10 @@
             <column name="debit_account_id" type="binary(16)"/>
             <column name="credit_account_id" type="binary(16)"/>
             <column name="status" type="VARCHAR(255)"/>
-            <column name="amount" type="DOUBLE"/>
+            <column name="amount" type="DECIMAL(12, 4)"/>
             <column name="description" type="VARCHAR(255)"/>
-            <column name="created_at" type="DATETIME"/>
-            <column name="updated_at" type="DATETIME"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet id="1695674833874-7" author="elenavasileva (generated)">

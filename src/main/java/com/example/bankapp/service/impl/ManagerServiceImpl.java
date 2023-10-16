@@ -1,4 +1,4 @@
-package com.example.bankapp.impl;
+package com.example.bankapp.service.impl;
 
 import com.example.bankapp.repository.ManagerRepository;
 import com.example.bankapp.service.ManagerService;

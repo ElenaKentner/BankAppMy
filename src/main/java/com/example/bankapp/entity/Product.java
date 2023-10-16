@@ -1,9 +1,13 @@
 package com.example.bankapp.entity;
 
+import com.example.bankapp.entity.enums.CurrencyCode;
+import com.example.bankapp.entity.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -14,8 +18,6 @@ import static jakarta.persistence.CascadeType.ALL;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-
 @Entity
 @Table(name = "products")
 public class Product {
@@ -24,53 +26,63 @@ public class Product {
     @Column(name = "id")
     private UUID id;
 
-    @JoinColumn(name = "manager_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @NonNull
-    private Manager managerId;
-
     @Column(name = "name")
-    @NonNull
     private String name;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    @NonNull
     private Status status;
 
     @Column(name = "currency_code")
-    @NonNull
-    private Integer currencyCode;
+    @Enumerated(EnumType.STRING)
+    private CurrencyCode currencyCode;
 
     @Column(name = "interest_rate")
-    @NonNull
-    private Double interestRate;
+    private BigDecimal interestRate;
 
-    @Column(name = "limit")
-    @NonNull
-    private Double limit;
+    @Column(name = "min_limit")
+    private Long minLimit;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "productId")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "product")
     private List<Agreement> agreements;
+
+    @JsonIgnore
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Manager manager;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(managerId, product.managerId) && Objects.equals(name, product.name);
+        return Objects.equals(id, product.id) && Objects.equals(createdAt, product.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, managerId, name);
+        return Objects.hash(id, createdAt);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", manager=" + manager +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", currencyCode=" + currencyCode +
+                ", interestRate=" + interestRate +
+                ", minLimit=" + minLimit +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

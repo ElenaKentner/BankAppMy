@@ -1,9 +1,11 @@
 package com.example.bankapp.entity;
 
+import com.example.bankapp.entity.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -14,8 +16,6 @@ import static jakarta.persistence.CascadeType.ALL;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -24,62 +24,77 @@ public class Client {
     @Column(name = "id")
     private UUID id;
 
-    @JoinColumn(name = "manager_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @NonNull
-    private Manager managerId;
-
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    @NonNull
     private Status status;
 
     @Column(name = "tax_code")
-    @NonNull
     private String taxCode;
 
     @Column(name = "first_name")
-    @NonNull
     private String firstName;
 
     @Column(name = "last_name")
-    @NonNull
     private String lastName;
 
     @Column(name = "email")
-    @NonNull
     private String email;
 
     @Column(name = "address")
-    @NonNull
     private String address;
 
     @Column(name = "phone")
-    @NonNull
     private String phone;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "clientId")
+    @JsonIgnore
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = ALL,
+            mappedBy = "client"
+    )
     private List<Account> accounts;
+
+    @JsonIgnore
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Manager manager;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return id == client.id && Objects.equals(lastName, client.lastName) && Objects.equals(phone, client.phone);
+        return Objects.equals(id, client.id)
+                && Objects.equals(firstName, client.firstName)
+                && Objects.equals(lastName, client.lastName)
+                && Objects.equals(email, client.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, lastName, phone);
+        return Objects.hash(id, firstName, lastName, email);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", status=" + status +
+                ", taxCode='" + taxCode + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
 

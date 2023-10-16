@@ -1,4 +1,4 @@
-package com.example.bankapp.impl;
+package com.example.bankapp.service.impl;
 
 import com.example.bankapp.entity.Agreement;
 import com.example.bankapp.repository.AgreementRepository;

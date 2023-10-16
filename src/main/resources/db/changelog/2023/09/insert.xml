@@ -55,7 +55,7 @@
             <column name="id" valueComputed="UUID_TO_BIN('fd8bfdc7-a876-4a3b-89dc-43648388ef60')"/>
             <column name="client_id" valueComputed="UUID_TO_BIN('9c06e3ca-1778-443d-971c-c8b2d8252473')"/>
             <column name="status" value="ACTIVE"/>
-            <column name="currency_code" value="840"/>
+            <column name="currency_code" value="USD"/>
             <column name="type" value="SAVINGS"/>
             <column name="balance" value="1000.00"/>
             <column name="name" value="Savings Account"/>
@@ -67,7 +67,7 @@
             <column name="id" valueComputed="UUID_TO_BIN('723f12ed-4497-421f-a5f2-4b44f3329ab6')"/>
             <column name="client_id" valueComputed="UUID_TO_BIN('9c06e3ca-1778-443d-971c-c8b2d8252473')"/>
             <column name="status" value="ACTIVE"/>
-            <column name="currency_code" value="840"/>
+            <column name="currency_code" value="PLN"/>
             <column name="type" value="SAVINGS"/>
             <column name="balance" value="2000.00"/>
             <column name="name" value="Savings Account"/>
@@ -79,8 +79,8 @@
             <column name="id" valueComputed="UUID_TO_BIN('7222f29a-ad44-4f89-af07-44502d80c274')"/>
             <column name="client_id" valueComputed="UUID_TO_BIN('a80d169b-7394-4178-8ede-e0fc91a43019')"/>
             <column name="status" value="ACTIVE"/>
-            <column name="currency_code" value="978"/>
-            <column name="type" value="Checking"/>
+            <column name="currency_code" value="USD"/>
+            <column name="type" value="CHECKING"/>
             <column name="balance" value="2500.00"/>
             <column name="name" value="Checking Account"/>
             <column name="created_at" value="2023-09-05 13:00:00"/>
@@ -91,8 +91,8 @@
             <column name="id" valueComputed="UUID_TO_BIN('69efb3f6-0cd5-474e-8e8e-55de0233134b')"/>
             <column name="client_id" valueComputed="UUID_TO_BIN('a80d169b-7394-4178-8ede-e0fc91a43019')"/>
             <column name="status" value="ACTIVE"/>
-            <column name="currency_code" value="978"/>
-            <column name="type" value="Checking"/>
+            <column name="currency_code" value="EUR"/>
+            <column name="type" value="CHECKING"/>
             <column name="balance" value="1500.00"/>
             <column name="name" value="Checking Account"/>
             <column name="created_at" value="2023-09-05 14:00:00"/>
@@ -104,9 +104,9 @@
             <column name="manager_id" valueComputed="UUID_TO_BIN('d66ead05-ef86-4ac4-8e03-3817877b9998')"/>
             <column name="name" value="Savings Product"/>
             <column name="status" value="ACTIVE"/>
-            <column name="currency_code" value="840"/>
-            <column name="interest_rate" value="0.03"/>
-            <column name="limit" value="10000"/>
+            <column name="currency_code" value="USD"/>
+            <column name="interest_rate" value="3.5"/>
+            <column name="min_limit" value="10000"/>
             <column name="created_at" value="2023-09-05 12:00:00"/>
             <column name="updated_at" value="2023-09-05 12:00:00"/>
         </insert>
@@ -116,9 +116,9 @@
             <column name="manager_id" valueComputed="UUID_TO_BIN('14a3c627-8722-4321-9df5-b89a855a63c4')"/>
             <column name="name" value="Investment Product"/>
             <column name="status" value="ACTIVE"/>
-            <column name="currency_code" value="840"/>
-            <column name="interest_rate" value="0.06"/>
-            <column name="limit" value="20000"/>
+            <column name="currency_code" value="PLN"/>
+            <column name="interest_rate" value="2.5"/>
+            <column name="min_limit" value="20000"/>
             <column name="created_at" value="2023-09-05 13:00:00"/>
             <column name="updated_at" value="2023-09-05 13:00:00"/>
         </insert>
@@ -127,9 +127,7 @@
             <column name="id" valueComputed="UUID_TO_BIN('cbdeb6e0-22bb-44e1-a804-fe00f11a3c12')"/>
             <column name="account_id" valueComputed="UUID_TO_BIN('fd8bfdc7-a876-4a3b-89dc-43648388ef60')"/>
             <column name="product_id" valueComputed="UUID_TO_BIN('c300a63e-64b7-4fd2-bef0-49fdd696c189')"/>
-            <column name="interest_rate" value="0.05"/>
             <column name="status" value="ACTIVE"/>
-            <column name="limit" value="5000"/>
             <column name="created_at" value="2023-09-05 12:00:00"/>
             <column name="updated_at" value="2023-09-05 12:00:00"/>
         </insert>
@@ -138,9 +136,7 @@
             <column name="id" valueComputed="UUID_TO_BIN('83996ed7-38e9-4db9-a513-ac5653ab1efc')"/>
             <column name="account_id" valueComputed="UUID_TO_BIN('723f12ed-4497-421f-a5f2-4b44f3329ab6')"/>
             <column name="product_id" valueComputed="UUID_TO_BIN('eccab511-1573-43bc-a64a-91fe071c042c')"/>
-            <column name="interest_rate" value="0.04"/>
             <column name="status" value="ACTIVE"/>
-            <column name="limit" value="7500"/>
             <column name="created_at" value="2023-09-05 13:00:00"/>
             <column name="updated_at" value="2023-09-05 13:00:00"/>
         </insert>

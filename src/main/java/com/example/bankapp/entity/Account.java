@@ -1,18 +1,22 @@
 package com.example.bankapp.entity;
 
+import com.example.bankapp.entity.enums.CurrencyCode;
+import com.example.bankapp.entity.enums.Status;
+import com.example.bankapp.entity.enums.Type;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static jakarta.persistence.CascadeType.ALL;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
-
+@NoArgsConstructor
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -21,72 +25,80 @@ public class Account {
     @Column(name = "id")
     private UUID id;
 
-    @JoinColumn(name = "client_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @NonNull
-    private Client clientId;
-
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    @NonNull
     private Status status;
 
     @Column(name = "currency_code")
-    @NonNull
-    private Integer currencyCode;
+    @Enumerated(EnumType.STRING)
+    private CurrencyCode currencyCode;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private Type type;
 
     @Column(name = "balance")
-    @NonNull
-    private Double balance;
+    private BigDecimal balance;
 
     @Column(name = "name")
-    @NonNull
     private String name;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "accountId")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "account")
     private List<Agreement> agreements;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = ALL)
-    @JoinTable(
-            name = "account_debit_transactions",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    @JsonIgnore
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Client client;
+
+    @JsonIgnore
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = ALL,
+            mappedBy = "debitAccount"
     )
     private List<Transaction> debitTransactions;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = ALL)
-    @JoinTable(
-            name = "account_credit_transactions",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    @JsonIgnore
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = ALL,
+            mappedBy = "creditAccount"
     )
     private List<Transaction> creditTransactions;
-
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return id == account.id && status == account.status && Objects.equals(name, account.name);
+        return Objects.equals(id, account.id) && Objects.equals(createdAt, account.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, name);
+        return Objects.hash(id, createdAt);
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", status=" + status +
+                ", currencyCode=" + currencyCode +
+                ", type=" + type +
+                ", balance=" + balance +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", agreements=" + agreements +
+                '}';
+    }
 }

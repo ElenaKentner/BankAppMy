@@ -1,0 +1,4 @@
+Configuration:
+  status: warn
+  Appenders:
+    Console:

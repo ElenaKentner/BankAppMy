@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
@@ -18,21 +20,27 @@ public class AccountController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AccountDTO> createAccount(@RequestBody AccountDTO accountDTO) {
+    public ResponseEntity<Account> createAccount(@RequestBody AccountDTO accountDTO) {
         Account createdAccount = accountService.createAccount(accountDTO);
+        return ResponseEntity.ok(createdAccount);
+    }
 
-        AccountDTO createdAccountDTO = new AccountDTO();
-        createdAccountDTO.setId(createdAccount.getId());
-        createdAccountDTO.setClientId(createdAccount.getClientId().getId());
-        createdAccountDTO.setStatus(createdAccount.getStatus());
-        createdAccountDTO.setCurrencyCode(createdAccount.getCurrencyCode());
-        createdAccountDTO.setType(createdAccount.getType());
-        createdAccountDTO.setBalance(createdAccount.getBalance());
-        createdAccountDTO.setName(createdAccount.getName());
-        createdAccountDTO.setCreatedAt(createdAccount.getCreatedAt());
-        createdAccountDTO.setUpdatedAt(createdAccount.getUpdatedAt());
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable UUID id) {
+        accountService.deleteAccount(id);
+        return ResponseEntity.ok("Account deleted successfully");
+    }
 
-        return ResponseEntity.ok(createdAccountDTO);
+    @GetMapping("/{id}")
+    public ResponseEntity<AccountDTO> findAccount(@PathVariable String id) {
+        AccountDTO accountDTO = accountService.findAccountById(id);
+        return ResponseEntity.ok(accountDTO);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<AccountDTO> updateAccount(@PathVariable String id, @RequestBody AccountDTO updatedAccountDTO) {
+        AccountDTO updatedAccount = accountService.updateAccount(id, updatedAccountDTO);
+        return ResponseEntity.ok(updatedAccount);
     }
 
 }

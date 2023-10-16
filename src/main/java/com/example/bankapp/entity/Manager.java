@@ -1,9 +1,11 @@
 package com.example.bankapp.entity;
 
+import com.example.bankapp.entity.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -12,8 +14,6 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-
 @Entity
 @Table(name = "managers")
 public class Manager {
@@ -22,33 +22,28 @@ public class Manager {
     @Column(name = "id")
     private UUID id;
 
-    @ToString.Exclude
-    @Basic(fetch = FetchType.LAZY)
     @Column(name = "first_name")
-    @NonNull
     private String firstName;
 
     @Column(name = "last_name")
-    @NonNull
     private String lastName;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    @NonNull
     private Status status;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "managerId", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "manager",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Client> client;
 
-    @OneToMany(mappedBy = "managerId", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> product;
 
     @Override
@@ -56,12 +51,26 @@ public class Manager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Manager manager = (Manager) o;
-        return id == manager.id && Objects.equals(firstName, manager.firstName) && Objects.equals(lastName, manager.lastName);
+        return Objects.equals(id, manager.id)
+                && Objects.equals(firstName, manager.firstName)
+                && Objects.equals(lastName, manager.lastName);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName);
+    }
+
+    @Override
+    public String toString() {
+        return "Manager{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
 
