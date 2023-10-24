@@ -50,8 +50,8 @@ public class Account {
     private LocalDateTime updatedAt;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "account")
-    private List<Agreement> agreements;
+    @OneToOne(fetch = FetchType.LAZY, cascade = ALL, mappedBy = "account")
+    private Agreement agreement;
 
     @JsonIgnore
     @JoinColumn(name = "client_id", referencedColumnName = "id")
@@ -98,7 +98,6 @@ public class Account {
                 ", name='" + name + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", agreements=" + agreements +
                 '}';
     }
 }

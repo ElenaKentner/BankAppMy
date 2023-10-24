@@ -10,4 +10,7 @@ public class AccountDTO {
     private String type;
     private String balance;
     private String name;
+    private String productName;
+    private String interestRate;
+    private String ownerFullName;
 }

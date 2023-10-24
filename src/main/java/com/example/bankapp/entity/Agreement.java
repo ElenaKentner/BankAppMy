@@ -33,7 +33,7 @@ public class Agreement {
 
     @JsonIgnore
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Account account;
 
     @JsonIgnore

@@ -5,6 +5,8 @@ import com.example.bankapp.entity.Client;
 
 public interface ClientService {
     Client getClientById(String id);
-
     ClientDTO getClientDtoById(String id);
+    ClientDTO createClient(ClientDTO clientDTO);
+    ClientDTO updateClient(String id, ClientDTO updatedClientDTO);
+    void deleteClient(String id);
 }

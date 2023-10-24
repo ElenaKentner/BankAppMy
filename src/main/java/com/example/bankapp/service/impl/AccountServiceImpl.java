@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -72,6 +73,13 @@ public class AccountServiceImpl implements AccountService {
 
         Account updatedAccount = accountRepository.save(existingAccount);
         return accountMapper.mapToDto(updatedAccount);
+    }
+
+    @Transactional
+    @Override
+    public List<AccountDTO> getByProductName(String productName) {
+        List<Account> accountList = accountRepository.getByProductName(productName);
+        return accountMapper.mapToDtoList(accountList);
     }
 
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,13 +24,13 @@ public class AccountController {
     @PostMapping("/create")
     public ResponseEntity<Account> createAccount(@RequestBody AccountDTO accountDTO) {
         Account createdAccount = accountService.createAccount(accountDTO);
-        return ResponseEntity.ok(createdAccount);
+        return ResponseEntity.created(URI.create("/" + createdAccount.getId())).body(createdAccount);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable UUID id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable UUID id) {
         accountService.deleteAccount(id);
-        return ResponseEntity.ok("Account deleted successfully");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -37,10 +39,16 @@ public class AccountController {
         return ResponseEntity.ok(accountDTO);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<AccountDTO> updateAccount(@PathVariable String id, @RequestBody AccountDTO updatedAccountDTO) {
         AccountDTO updatedAccount = accountService.updateAccount(id, updatedAccountDTO);
         return ResponseEntity.ok(updatedAccount);
+    }
+
+    @GetMapping("/by-product-name")
+    public ResponseEntity<List<AccountDTO>> getByProductName(@RequestParam(name = "productName") String productName){
+        List<AccountDTO> accountDTOList = accountService.getByProductName(productName);
+        return ResponseEntity.ok(accountDTOList);
     }
 
 }

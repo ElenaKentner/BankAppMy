@@ -58,7 +58,7 @@
             <column name="currency_code" value="USD"/>
             <column name="type" value="SAVINGS"/>
             <column name="balance" value="1000.00"/>
-            <column name="name" value="Savings Account"/>
+            <column name="name" value="234509871234"/>
             <column name="created_at" value="2023-09-05 12:00:00"/>
             <column name="updated_at" value="2023-09-05 12:00:00"/>
         </insert>
@@ -70,7 +70,7 @@
             <column name="currency_code" value="PLN"/>
             <column name="type" value="SAVINGS"/>
             <column name="balance" value="2000.00"/>
-            <column name="name" value="Savings Account"/>
+            <column name="name" value="45678989765432"/>
             <column name="created_at" value="2023-09-05 12:00:00"/>
             <column name="updated_at" value="2023-09-05 12:00:00"/>
         </insert>
@@ -82,7 +82,7 @@
             <column name="currency_code" value="USD"/>
             <column name="type" value="CHECKING"/>
             <column name="balance" value="2500.00"/>
-            <column name="name" value="Checking Account"/>
+            <column name="name" value="123409876543"/>
             <column name="created_at" value="2023-09-05 13:00:00"/>
             <column name="updated_at" value="2023-09-05 13:00:00"/>
         </insert>
@@ -94,7 +94,7 @@
             <column name="currency_code" value="EUR"/>
             <column name="type" value="CHECKING"/>
             <column name="balance" value="1500.00"/>
-            <column name="name" value="Checking Account"/>
+            <column name="name" value="098734561827"/>
             <column name="created_at" value="2023-09-05 14:00:00"/>
             <column name="updated_at" value="2023-09-05 15:00:00"/>
         </insert>

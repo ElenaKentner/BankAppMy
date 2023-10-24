@@ -16,7 +16,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
-
     private final ClientMapper clientMapper;
 
     @Transactional
@@ -32,6 +31,23 @@ public class ClientServiceImpl implements ClientService {
         Client client = getClientById(id);
 
         return clientMapper.mapToDto(client);
+    }
+
+    @Transactional
+    @Override
+    public ClientDTO createClient(ClientDTO clientDTO) {
+        return clientDTO;
+    }
+
+    @Transactional
+    @Override
+    public ClientDTO updateClient(String id, ClientDTO updatedClientDTO) {
+        return updatedClientDTO;
+    }
+
+    @Transactional
+    @Override
+    public void deleteClient(String id) {
     }
 }
 
