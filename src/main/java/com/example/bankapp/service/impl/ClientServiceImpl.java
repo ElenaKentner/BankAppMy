@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,12 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     @Override
     public ClientDTO createClient(ClientDTO clientDTO) {
-        return clientDTO;
+        Client client = clientMapper.toEntity(clientDTO);
+        client.setCreatedAt(LocalDateTime.now());
+        client.setUpdatedAt(LocalDateTime.now());
+        clientRepository.save(client);
+
+        return clientMapper.mapToDto(client);
     }
 
     @Transactional

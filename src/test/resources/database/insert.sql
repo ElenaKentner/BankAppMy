@@ -4,14 +4,12 @@ VALUES
 
 INSERT INTO clients (id, manager_id, status, tax_code, first_name, last_name, email, address, phone, created_at, updated_at)
 VALUES
-    ('c48a263c-5a20-413e-8c9c-d89d83b1ee41', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'NEW', '12345678', 'Ivanov', 'Vasily', 'ivan@gmail.com', 'Krakow, Kalina, 15', '4867538990', '2023-09-04 12:00:00', '2023-09-04 12:00:00');
+    ('c48a263c-5a20-413e-8c9c-d89d83b1ee41', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'NEW', '12345678', 'Vasily', 'Ivanov', 'ivan@gmail.com', 'Krakow, Kalina, 15', '4867538990', '2023-09-04 12:00:00', '2023-09-04 12:00:00'),
+    ('fee1a328-e29b-4541-9284-b7c679e8a58e', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'NEW', '98765432', 'Vasja', 'Petrov', 'petrov@gmail.com', 'Warshaw, Kalina, 11', '6789908643', '2023-10-04 12:00:00', '2023-10-04 12:00:00');
 
 INSERT INTO accounts (id, client_id, status, currency_code, type, balance, name, created_at, updated_at)
 VALUES
-    ('e0a35315-4bb8-485a-a108-93b346ab452e','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '657483958765', '2023-09-05 12:00:00', '2023-09-05 12:00:00');
-
-INSERT INTO accounts (id, client_id, status, currency_code, type, balance, name, created_at, updated_at)
-VALUES
+    ('e0a35315-4bb8-485a-a108-93b346ab452e','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '657483958765', '2023-09-05 12:00:00', '2023-09-05 12:00:00'),
     ('11f7986c-c1d8-4231-838a-e84b17ccebdb','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '657483958765', '2023-09-05 12:00:00', '2023-09-05 12:00:00');
 
 INSERT INTO products (id, manager_id, name, status, currency_code, interest_rate, min_limit, created_at, updated_at)

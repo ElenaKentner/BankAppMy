@@ -8,8 +8,13 @@ import java.util.UUID;
 
 public interface AccountService {
     Account createAccount(AccountDTO accountDTO);
+
     void deleteAccount(UUID accountId);
+
     AccountDTO findAccountById(String id);
+
     AccountDTO updateAccount(String id, AccountDTO updatedAccountDTO);
+
     List<AccountDTO> getByProductName(String productName);
+
 }

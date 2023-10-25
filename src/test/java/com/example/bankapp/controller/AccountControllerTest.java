@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,10 +111,15 @@ class AccountControllerTest {
         Account accountResult = objectMapper.readValue(accountResultJson, Account.class);
         UUID createdAccountId = accountResult.getId();
 
-        MvcResult findAccountResult = mockMvc.perform(MockMvcRequestBuilders.get("/accounts/" + createdAccountId))
+        MvcResult findAccountResult = mockMvc.perform(MockMvcRequestBuilders.get("/accounts/"
+                        + createdAccountId))
                 .andReturn();
+        String accountResultGetJson = findAccountResult.getResponse().getContentAsString();
+        Account accountResultGet = objectMapper.readValue(accountResultGetJson, Account.class);
 
         Assertions.assertEquals(200, findAccountResult.getResponse().getStatus());
+        Assertions.assertEquals(accountDTO.getType(), accountResultGet.getType().toString());
+        Assertions.assertEquals(accountDTO.getCurrencyCode(), accountResultGet.getCurrencyCode().toString());
 
     }
 
@@ -143,68 +149,43 @@ class AccountControllerTest {
 
         String updatedAccountDtoString = objectMapper.writeValueAsString(updatedAccountDTO);
 
-        MvcResult updateAccountResult = mockMvc.perform(MockMvcRequestBuilders.put("/accounts/update/" + createdAccountId)
+        MvcResult updateAccountResult = mockMvc.perform(MockMvcRequestBuilders.put("/accounts/update/"
+                                + createdAccountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedAccountDtoString))
                 .andReturn();
+        String accountResultUpdateJson = updateAccountResult.getResponse().getContentAsString();
+        AccountDTO accountResultUpdate = objectMapper.readValue(accountResultUpdateJson, AccountDTO.class);
 
         Assertions.assertEquals(200, updateAccountResult.getResponse().getStatus());
+        Assertions.assertEquals(updatedAccountDTO.getType(), accountResultUpdate.getType());
+        Assertions.assertEquals(updatedAccountDTO.getCurrencyCode(), accountResultUpdate.getCurrencyCode());
     }
 
     @Test
     void getByProductName() throws Exception {
-        String clientIdA = UUID.randomUUID().toString();
-        String clientIdB = UUID.randomUUID().toString();
-        String clientIdC = UUID.randomUUID().toString();
+       List<AccountDTO> expected = new ArrayList<>();
+       AccountDTO expectedDTO1 = new AccountDTO();
+       expectedDTO1.setId("e0a35315-4bb8-485a-a108-93b346ab452e");
+       expectedDTO1.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
+       expectedDTO1.setCurrencyCode("USD");
+       expectedDTO1.setType("SAVINGS");
+       expectedDTO1.setBalance("1000.00");
+       expectedDTO1.setName("657483958765");
+       expectedDTO1.setProductName("name");
+       expectedDTO1.setInterestRate("1.5000");
+       expectedDTO1.setOwnerFullName("Ivanov Vasily");
 
-        AccountDTO accountA = new AccountDTO();
-        accountA.setClientId(clientIdA);
-        accountA.setType("CHECKING");
-        accountA.setCurrencyCode("EUR");
-        accountA.setProductName("ProductA");
-
-        AccountDTO accountB = new AccountDTO();
-        accountB.setClientId(clientIdB);
-        accountB.setType("SAVINGS");
-        accountB.setCurrencyCode("PLN");
-        accountB.setProductName("ProductB");
-
-        AccountDTO accountC = new AccountDTO();
-        accountC.setClientId(clientIdC);
-        accountC.setType("CHECKING");
-        accountC.setCurrencyCode("USD");
-        accountC.setProductName("ProductC");
-
-        String accountAJson = objectMapper.writeValueAsString(accountA);
-        String accountBJson = objectMapper.writeValueAsString(accountB);
-        String accountCJson = objectMapper.writeValueAsString(accountC);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/accounts/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(accountAJson))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/accounts/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(accountBJson))
-                .andExpect(status().isCreated());
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/accounts/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(accountCJson))
-                .andExpect(status().isCreated());
+       expected.add(expectedDTO1);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/accounts/by-product-name")
-                        .param("productName", "ProductB"))
+                        .param("productName", "name"))
                 .andReturn();
 
         String resultJson = result.getResponse().getContentAsString();
         List<AccountDTO> accountDTOList = objectMapper.readValue(resultJson, new TypeReference<>() {
         });
-
-        boolean containsProductB = accountDTOList.stream()
-                .anyMatch(accountDTO -> "ProductB".equals(accountDTO.getProductName()));
-        Assertions.assertTrue(containsProductB);
+        Assertions.assertEquals(expected, accountDTOList);
     }
 
 }
