@@ -3,11 +3,9 @@ package com.example.bankapp.mapper;
 import com.example.bankapp.dto.AccountDTO;
 import com.example.bankapp.entity.Account;
 import com.example.bankapp.entity.Client;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -21,12 +19,19 @@ public interface AccountMapper {
     AccountDTO mapToDto(Account account);
 
     @Mapping(target = "id", ignore = true)
-    Account updateAccountFromDTO(AccountDTO accountDTO, @MappingTarget Account account);
+    @Mapping(target = "balance", source = "balance", qualifiedByName = "stringToBigDecimal",
+            nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+    void updateAccountFromDTO(AccountDTO accountDTO, @MappingTarget Account account);
 
     List<AccountDTO> mapToDtoList(List<Account> accountList);
 
     @Named("getFullName")
     default String getFullName(Client client) {
         return client.getFirstName() + " " + client.getLastName();
+    }
+
+    @Named("stringToBigDecimal")
+    default BigDecimal stringToBigDecimal(String value) {
+        return new BigDecimal(value);
     }
 }

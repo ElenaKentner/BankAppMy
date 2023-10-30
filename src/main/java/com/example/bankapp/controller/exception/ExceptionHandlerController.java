@@ -11,6 +11,15 @@ import java.util.Arrays;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorDto> handlerRuntimeException(RuntimeException runtimeException) {
+        ErrorDto errorDto = new ErrorDto(HttpStatus.INTERNAL_SERVER_ERROR,
+                runtimeException.getMessage(),
+                Arrays.toString(runtimeException.getStackTrace()));
+        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorDto> handleEntityNotFoundException(EntityNotFoundException exception) {
         ErrorDto errorDto = new ErrorDto(HttpStatus.NO_CONTENT,

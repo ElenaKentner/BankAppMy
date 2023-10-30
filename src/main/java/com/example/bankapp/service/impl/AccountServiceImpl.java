@@ -68,9 +68,12 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO updateAccount(String id, AccountDTO updatedAccountDTO) {
         Account existingAccount = accountRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException("Account not found"));
-
-        existingAccount = accountMapper.updateAccountFromDTO(updatedAccountDTO, existingAccount);
-
+        if (updatedAccountDTO.getClientId() != null &&
+                !updatedAccountDTO.getClientId().equals(existingAccount.getClient().getId().toString())){
+            Client client = clientService.getClientById(updatedAccountDTO.getClientId());
+            existingAccount.setClient(client);
+        }
+        accountMapper.updateAccountFromDTO(updatedAccountDTO, existingAccount);
         Account updatedAccount = accountRepository.save(existingAccount);
         return accountMapper.mapToDto(updatedAccount);
     }

@@ -1,9 +1,9 @@
 package com.example.bankapp.service;
 
-import com.example.bankapp.entity.Agreement;
+import com.example.bankapp.dto.AgreementDTO;
 
 public interface AgreementService {
-    Agreement createAgreement(Agreement agreement);
+    AgreementDTO createAgreement(AgreementDTO agreementDto);
 }
 
 

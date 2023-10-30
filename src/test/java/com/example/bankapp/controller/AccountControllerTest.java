@@ -146,6 +146,7 @@ class AccountControllerTest {
         AccountDTO updatedAccountDTO = new AccountDTO();
         updatedAccountDTO.setType("SAVINGS");
         updatedAccountDTO.setCurrencyCode("USD");
+        updatedAccountDTO.setBalance("1000");
 
         String updatedAccountDtoString = objectMapper.writeValueAsString(updatedAccountDTO);
 
@@ -160,6 +161,7 @@ class AccountControllerTest {
         Assertions.assertEquals(200, updateAccountResult.getResponse().getStatus());
         Assertions.assertEquals(updatedAccountDTO.getType(), accountResultUpdate.getType());
         Assertions.assertEquals(updatedAccountDTO.getCurrencyCode(), accountResultUpdate.getCurrencyCode());
+        Assertions.assertEquals(updatedAccountDTO.getBalance(), accountResultUpdate.getBalance());
     }
 
     @Test
@@ -174,7 +176,7 @@ class AccountControllerTest {
        expectedDTO1.setName("657483958765");
        expectedDTO1.setProductName("name");
        expectedDTO1.setInterestRate("1.5000");
-       expectedDTO1.setOwnerFullName("Ivanov Vasily");
+       expectedDTO1.setOwnerFullName("Vasily Ivanov");
 
        expected.add(expectedDTO1);
 
