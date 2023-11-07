@@ -3,9 +3,10 @@ spring:
     banner-mode: off
 
   datasource:
-    url: jdbc:mysql://localhost:3306/bankapp?createDatabaseIfNotExist=true
-    username: bankapp
-    password: "dfgdfgASR123@!"
+    url: ${url}?createDatabaseIfNotExist=true
+    username: ${username}
+    password: ${password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     defer-datasource-initialization: false
@@ -13,7 +14,6 @@ spring:
     properties:
       hibernate:
         type: uuid-char
-        dialect: org.hibernate.dialect.MySQL57Dialect
 
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.xml

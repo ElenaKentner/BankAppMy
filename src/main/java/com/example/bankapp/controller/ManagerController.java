@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -24,6 +25,18 @@ public class ManagerController {
     public ResponseEntity<ManagerDTO> findManager(@PathVariable String id) {
         ManagerDTO managerDTO = managerService.findManagerById(id);
         return ResponseEntity.ok(managerDTO);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ManagerDTO> createManager(@RequestBody ManagerDTO managerDTO) {
+        ManagerDTO createdManager = managerService.createManager(managerDTO);
+        return ResponseEntity.created(URI.create("/" + createdManager.getId())).body(createdManager);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ManagerDTO> updateManager(@PathVariable String id, @RequestBody ManagerDTO updatemanagerDTO) {
+        ManagerDTO updateManager = managerService.updateManager(id, updatemanagerDTO);
+        return ResponseEntity.ok(updateManager);
     }
 
 

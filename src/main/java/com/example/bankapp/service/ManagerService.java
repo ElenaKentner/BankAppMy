@@ -9,5 +9,9 @@ public interface ManagerService {
 
     ManagerDTO findManagerById(String id);
 
+    ManagerDTO createManager(ManagerDTO managerDTO);
+
+    ManagerDTO updateManager(String id, ManagerDTO updatemanagerDTO);
+
 }
 

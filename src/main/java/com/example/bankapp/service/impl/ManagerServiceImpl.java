@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -17,7 +18,9 @@ import java.util.UUID;
 public class ManagerServiceImpl implements ManagerService {
     private final ManagerRepository managerRepository;
     private final ManagerMapper managerMapper;
+
     @Override
+    @Transactional
     public void deleteManagerById(UUID id) {
         managerRepository.deleteById(id);
     }
@@ -29,5 +32,25 @@ public class ManagerServiceImpl implements ManagerService {
                 .orElseThrow(()-> new EntityNotFoundException("Manager not found"));
         return managerMapper.mapToDto(manager);
     }
+
+    @Override
+    @Transactional
+    public ManagerDTO createManager(ManagerDTO managerDTO) {
+        Manager manager = managerMapper.toEntity(managerDTO);
+        manager.setCreatedAt(LocalDateTime.now());
+        manager.setUpdatedAt(LocalDateTime.now());
+        managerRepository.save(manager);
+
+        return managerMapper.mapToDto(manager);
+    }
+
+    @Transactional
+    @Override
+    public ManagerDTO updateManager(String id, ManagerDTO updatedManagerDTO) {
+        Manager manager = new Manager();
+
+        return managerMapper.mapToDto(manager);
+    }
+
 }
 

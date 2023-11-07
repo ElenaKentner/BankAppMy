@@ -50,27 +50,6 @@ public class ClientServiceImpl implements ClientService {
     public ClientDTO updateClient(String id, ClientDTO updatedClientDTO) {
         Client client = getClientById(id);
         clientMapper.updateClientFromDTO(updatedClientDTO, client);
-//        if (updatedClientDTO.getStatus() != null) {
-//            client.setStatus(Status.valueOf(updatedClientDTO.getStatus()));
-//        }
-//        if (updatedClientDTO.getTaxCode() != null) {
-//            client.setTaxCode(updatedClientDTO.getTaxCode());
-//        }
-//        if (updatedClientDTO.getFirstName() != null) {
-//            client.setFirstName(updatedClientDTO.getFirstName());
-//        }
-//        if (updatedClientDTO.getLastName() != null) {
-//            client.setLastName(updatedClientDTO.getLastName());
-//        }
-//        if (updatedClientDTO.getEmail() != null) {
-//            client.setEmail(updatedClientDTO.getEmail());
-//        }
-//        if (updatedClientDTO.getAddress() != null) {
-//            client.setAddress(updatedClientDTO.getAddress());
-//        }
-//        if (updatedClientDTO.getPhone() != null) {
-//            client.setPhone(updatedClientDTO.getPhone());
-//        }
 
         clientRepository.save(client);
 
