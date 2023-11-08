@@ -5,6 +5,7 @@ import com.example.bankapp.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -27,5 +28,11 @@ public class TransactionController {
     public ResponseEntity<TransactionDTO> findTransaction(@PathVariable String id){
         TransactionDTO transactionDTO = transactionService.findTransactionById(id);
         return ResponseEntity.ok(transactionDTO);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionDTO transactionDTO) {
+        TransactionDTO createdTransaction = transactionService.createTransaction(transactionDTO);
+        return ResponseEntity.created(URI.create("/" + createdTransaction.getId())).body(createdTransaction);
     }
 }

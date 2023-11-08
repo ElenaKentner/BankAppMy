@@ -9,5 +9,7 @@ public interface TransactionService {
 
     TransactionDTO findTransactionById(String id);
 
+    TransactionDTO createTransaction(TransactionDTO transactionDTO);
+
 }
 

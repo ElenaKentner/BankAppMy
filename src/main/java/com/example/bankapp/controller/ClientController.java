@@ -2,6 +2,7 @@ package com.example.bankapp.controller;
 
 import com.example.bankapp.dto.ClientDTO;
 import com.example.bankapp.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ClientController {
         return ResponseEntity.ok(client);
     }
     @PostMapping("/create")
-    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> createClient(@Valid @RequestBody ClientDTO clientDTO) {
         ClientDTO createdClient = clientService.createClient(clientDTO);
         return ResponseEntity.created(URI.create("/" + createdClient.getId())).body(createdClient);
     }

@@ -5,11 +5,13 @@ import com.example.bankapp.entity.Transaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AccountMapper.class)
 public interface TransactionMapper {
 
-    @Mapping(source = "creditAccount.id", target = "creditAccountId")
-    @Mapping(source = "debitAccount.id", target = "debitAccountId")
+    @Mapping(source = "creditAccount.name", target = "creditAccountName")
+    @Mapping(source = "debitAccount.name", target = "debitAccountName")
     TransactionDTO mapToDto(Transaction transaction);
 
+    @Mapping(source = "amount", target = "amount", qualifiedByName = "stringToBigDecimal")
+    Transaction mapToEntity(TransactionDTO transactionDTO);
 }

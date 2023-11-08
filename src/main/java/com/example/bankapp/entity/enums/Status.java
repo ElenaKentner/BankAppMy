@@ -5,5 +5,6 @@ public enum Status {
     INACTIVE,
     FROZEN,
     BLOCKED,
-    NEW
+    NEW,
+    SUCCESS
 }

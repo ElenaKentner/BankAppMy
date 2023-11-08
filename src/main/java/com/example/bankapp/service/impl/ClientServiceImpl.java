@@ -25,6 +25,15 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException(id + " not found"));
     }
+// TODO: 07/11/2023
+//    @Transactional
+//    @Override
+//    public Client getClientById(String id) {
+//        UUID uuid = UUID.fromString(id);
+//        byte[] uuidBytes = toByteArray(uuid);
+//        return clientRepository.findClientById(uuidBytes)
+//                .orElseThrow(() -> new EntityNotFoundException(id + " not found"));
+//    }
 
     @Transactional
     @Override
@@ -61,6 +70,17 @@ public class ClientServiceImpl implements ClientService {
     public void deleteClient(String id) {
         clientRepository.deleteById(UUID.fromString(id));
 
+    }
+
+    private static byte[] toByteArray(UUID uuid) {
+        long msb = uuid.getMostSignificantBits();
+        long lsb = uuid.getLeastSignificantBits();
+        byte[] buffer = new byte[16];
+        for (int i = 0; i < 8; i++) {
+            buffer[i] = (byte) (msb >>> 8 * (7 - i));
+            buffer[8 + i] = (byte) (lsb >>> 8 * (7 - i));
+        }
+        return buffer;
     }
 }
 
