@@ -47,7 +47,10 @@ public class ManagerServiceImpl implements ManagerService {
     @Transactional
     @Override
     public ManagerDTO updateManager(String id, ManagerDTO updatedManagerDTO) {
-        Manager manager = new Manager();
+        Manager manager = managerRepository.findById(UUID.fromString(id))
+                .orElseThrow(()-> new EntityNotFoundException("Manager not found"));
+        managerMapper.updateManagerFromDTO(updatedManagerDTO, manager);
+        managerRepository.save(manager);
 
         return managerMapper.mapToDto(manager);
     }

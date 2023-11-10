@@ -173,7 +173,7 @@ class AccountControllerTest {
        expectedDTO1.setCurrencyCode("USD");
        expectedDTO1.setType("SAVINGS");
        expectedDTO1.setBalance("1000.00");
-       expectedDTO1.setName("657483958765");
+       expectedDTO1.setName("988776544332");
        expectedDTO1.setProductName("name");
        expectedDTO1.setInterestRate("1.5000");
        expectedDTO1.setOwnerFullName("Vasily Ivanov");

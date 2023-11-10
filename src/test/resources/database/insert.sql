@@ -9,7 +9,7 @@ VALUES
 
 INSERT INTO accounts (id, client_id, status, currency_code, type, balance, name, created_at, updated_at)
 VALUES
-    ('e0a35315-4bb8-485a-a108-93b346ab452e','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '657483958765', '2023-09-05 12:00:00', '2023-09-05 12:00:00'),
+    ('e0a35315-4bb8-485a-a108-93b346ab452e','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '988776544332', '2023-09-05 12:00:00', '2023-09-05 12:00:00'),
     ('11f7986c-c1d8-4231-838a-e84b17ccebdb','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '657483958765', '2023-09-05 12:00:00', '2023-09-05 12:00:00');
 
 INSERT INTO products (id, manager_id, name, status, currency_code, interest_rate, min_limit, created_at, updated_at)

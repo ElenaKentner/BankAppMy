@@ -68,4 +68,31 @@ class ManagerControllerTest {
         Assertions.assertEquals(managerDTO.getLastName(), managerResult.getLastName());
 
     }
+
+    @Test
+    void updateManager() throws Exception {
+        ManagerDTO managerDTO = new ManagerDTO();
+        managerDTO.setFirstName("John");
+        managerDTO.setLastName("Rom");
+        managerDTO.setStatus("NEW");
+
+        String managerId = "1370ec78-5c28-46c3-b8dd-8ebee695daea";
+
+        String managerDtoString = objectMapper.writeValueAsString(managerDTO);
+
+        MvcResult managerDtoResult = mockMvc.perform(MockMvcRequestBuilders.put("/managers/update/"
+                                + managerId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(managerDtoString)).andExpect(status().isOk())
+                .andReturn();
+
+        String managerResultJson = managerDtoResult.getResponse().getContentAsString();
+        ManagerDTO managerResult = objectMapper.readValue(managerResultJson, ManagerDTO.class);
+
+        Assertions.assertEquals(managerId, managerResult.getId());
+        Assertions.assertEquals(managerDTO.getFirstName(), managerResult.getFirstName());
+        Assertions.assertEquals(managerDTO.getLastName(), managerResult.getLastName());
+        Assertions.assertEquals(managerDTO.getStatus(), managerResult.getStatus());
+
+    }
 }

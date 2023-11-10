@@ -3,6 +3,7 @@ package com.example.bankapp.controller;
 import com.example.bankapp.dto.AccountDTO;
 import com.example.bankapp.entity.Account;
 import com.example.bankapp.service.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,7 @@ public class AccountController {
         return ResponseEntity.ok(updatedAccount);
     }
 
+    @Operation(summary = "get account List with custom product name")
     @GetMapping("/by-product-name")
     public ResponseEntity<List<AccountDTO>> getByProductName(@RequestParam(name = "productName") String productName){
         List<AccountDTO> accountDTOList = accountService.getByProductName(productName);

@@ -12,11 +12,11 @@ public class ClientDTO {
     private String taxCode;
 
     @NotBlank
-    @Pattern(regexp = "[A-Za-z-']", message = "first name must contain only latin alphabet")
+    @Pattern(regexp = "[A-Za-z-']+", message = "first name must contain only latin alphabet")
     private String firstName;
 
     @NotBlank
-    @Pattern(regexp = "[A-Za-z-']", message = "last name must contain only latin alphabet")
+    @Pattern(regexp = "[A-Za-z-']+", message = "last name must contain only latin alphabet")
     private String lastName;
 
     @Email

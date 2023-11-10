@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS accounts
     currency_code  VARCHAR(3),
     type           VARCHAR(20),
     balance        DECIMAL(15, 2),
-    name           VARCHAR(25),
+    name           VARCHAR(25) Unique,
     created_at     TIMESTAMP,
     updated_at     TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES clients (id)
