@@ -7,10 +7,12 @@ import com.example.bankapp.repository.ClientRepository;
 import com.example.bankapp.service.ClientService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -72,16 +75,18 @@ public class ClientServiceImpl implements ClientService {
 
     }
 
-    private static byte[] toByteArray(UUID uuid) {
-        long msb = uuid.getMostSignificantBits();
-        long lsb = uuid.getLeastSignificantBits();
-        byte[] buffer = new byte[16];
-        for (int i = 0; i < 8; i++) {
-            buffer[i] = (byte) (msb >>> 8 * (7 - i));
-            buffer[8 + i] = (byte) (lsb >>> 8 * (7 - i));
+    @Override
+    public Client findByEmailWithPassword(String email, String password) {
+        Optional<Client> clientOptional = clientRepository.findByEmail(email);
+        if (clientOptional.isPresent()) {
+            Client client = clientOptional.get();
+            if (passwordEncoder.matches(password, client.getPassword())) {
+                return client;
+            }
         }
-        return buffer;
+        throw new RuntimeException("email or password don't correct");
     }
+
 }
 
 

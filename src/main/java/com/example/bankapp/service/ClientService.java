@@ -14,4 +14,6 @@ public interface ClientService {
     ClientDTO updateClient(String id, ClientDTO updatedClientDTO);
 
     void deleteClient(String id);
+
+    Client findByEmailWithPassword(String email, String password);
 }

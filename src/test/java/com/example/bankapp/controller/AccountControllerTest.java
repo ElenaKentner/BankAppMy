@@ -1,8 +1,10 @@
 package com.example.bankapp.controller;
 
 import com.example.bankapp.dto.AccountDTO;
-import com.example.bankapp.dto.ErrorDto;
+import com.example.bankapp.dto.ErrorDTO;
 import com.example.bankapp.entity.Account;
+import com.example.bankapp.entity.Client;
+import com.example.bankapp.entity.security.CustomUserDetails;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -35,6 +41,7 @@ class AccountControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void createAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
@@ -58,6 +65,7 @@ class AccountControllerTest {
     }
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void deleteAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
@@ -87,16 +95,27 @@ class AccountControllerTest {
 
         Assertions.assertEquals(204, accountDtoGetResult.getResponse().getStatus());
         String resultErrorJson = accountDtoGetResult.getResponse().getContentAsString();
-        ErrorDto errorDtoResult = objectMapper.readValue(resultErrorJson, ErrorDto.class);
-        Assertions.assertEquals("Account not found", errorDtoResult.getMessage());
+        ErrorDTO errorDTOResult = objectMapper.readValue(resultErrorJson, ErrorDTO.class);
+        Assertions.assertEquals("Account not found", errorDTOResult.getMessage());
     }
 
     @Test
+//    @WithUserDetails("ivan@gmail.com")
     void findAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
         accountDTO.setType("CHECKING");
         accountDTO.setCurrencyCode("EUR");
+
+        Client client = new Client();
+        client.setEmail("ivan@gmail.com");
+
+        UserDetails userDetails = new CustomUserDetails(client);
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+                null, userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         String accountDtoString = objectMapper.writeValueAsString(accountDTO);
 
@@ -124,6 +143,7 @@ class AccountControllerTest {
     }
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void updateAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
@@ -165,6 +185,7 @@ class AccountControllerTest {
     }
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void getByProductName() throws Exception {
        List<AccountDTO> expected = new ArrayList<>();
        AccountDTO expectedDTO1 = new AccountDTO();
@@ -182,6 +203,7 @@ class AccountControllerTest {
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/accounts/by-product-name")
                         .param("productName", "name"))
+                .andExpect(status().isOk())
                 .andReturn();
 
         String resultJson = result.getResponse().getContentAsString();

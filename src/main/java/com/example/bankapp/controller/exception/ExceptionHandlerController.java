@@ -1,6 +1,6 @@
 package com.example.bankapp.controller.exception;
 
-import com.example.bankapp.dto.ErrorDto;
+import com.example.bankapp.dto.ErrorDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,24 +17,24 @@ import java.util.List;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorDto> handlerRuntimeException(RuntimeException runtimeException) {
-        ErrorDto errorDto = new ErrorDto(HttpStatus.INTERNAL_SERVER_ERROR,
+    public ResponseEntity<ErrorDTO> handlerRuntimeException(RuntimeException runtimeException) {
+        ErrorDTO errorDto = new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR,
                 runtimeException.getMessage(),
                 Arrays.toString(runtimeException.getStackTrace()));
         return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorDto> handleEntityNotFoundException(EntityNotFoundException exception) {
-        ErrorDto errorDto = new ErrorDto(HttpStatus.NO_CONTENT,
+    public ResponseEntity<ErrorDTO> handleEntityNotFoundException(EntityNotFoundException exception) {
+        ErrorDTO errorDto = new ErrorDTO(HttpStatus.NO_CONTENT,
                 exception.getMessage(),
                 Arrays.toString(exception.getStackTrace()));
         return new ResponseEntity<>(errorDto, HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        ErrorDto errorDto = new ErrorDto(HttpStatus.BAD_REQUEST,
+    public ResponseEntity<ErrorDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        ErrorDTO errorDto = new ErrorDTO(HttpStatus.BAD_REQUEST,
                 getMessage(exception),
                 Arrays.toString(exception.getStackTrace()));
         return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);

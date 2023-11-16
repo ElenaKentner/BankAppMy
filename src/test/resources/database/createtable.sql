@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS clients
     email          VARCHAR(25),
     address        VARCHAR(255),
     phone          VARCHAR(25),
+    password       VARCHAR(60),
     created_at     TIMESTAMP,
     updated_at     TIMESTAMP,
     FOREIGN KEY (manager_id) REFERENCES managers (id)

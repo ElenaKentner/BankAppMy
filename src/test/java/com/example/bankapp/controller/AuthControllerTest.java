@@ -1,6 +1,7 @@
 package com.example.bankapp.controller;
 
-import com.example.bankapp.dto.ProductDTO;
+import com.example.bankapp.dto.ClientCredentialsDTO;
+import com.example.bankapp.security.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,39 +20,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/database/droptables.sql")
 @Sql("/database/createtable.sql")
 @Sql("/database/insert.sql")
-class ProductControllerTest {
-
+class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private JwtService jwtService;
 
     @Test
-    @WithUserDetails("ivan@gmail.com")
-    void updateById() throws Exception {
-        String productId = "afc9da7c-299d-4dd1-93bc-d71de8e5d1a6";
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setStatus("BLOCKED");
-        productDTO.setInterestRate("2.50");
+    void auth() throws Exception {
+        ClientCredentialsDTO clientCredentialsDTO = new ClientCredentialsDTO();
+        clientCredentialsDTO.setEmail("ivan@gmail.com");
+        clientCredentialsDTO.setPassword("12qwaszx");
 
-        String productDtoString = objectMapper.writeValueAsString(productDTO);
+        String credentialDtoString = objectMapper.writeValueAsString(clientCredentialsDTO);
 
-        String productDtoResultJson = mockMvc.perform(MockMvcRequestBuilders.put("/products/update/"
-                                + productId)
+        String tokenResult = mockMvc.perform(MockMvcRequestBuilders.post("/auth")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(productDtoString))
+                        .content(credentialDtoString))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        ProductDTO updatedProductDto = objectMapper.readValue(productDtoResultJson, ProductDTO.class);
+        String email = jwtService.getEmailFromToken(tokenResult);
 
-        Assertions.assertEquals(productDTO.getStatus(), updatedProductDto.getStatus());
-        Assertions.assertEquals(productDTO.getInterestRate(), updatedProductDto.getInterestRate());
-
-        Assertions.assertNotNull(updatedProductDto.getName());
-        Assertions.assertNotNull(updatedProductDto.getMinLimit());
-
+        Assertions.assertEquals(clientCredentialsDTO.getEmail(), email);
     }
 }

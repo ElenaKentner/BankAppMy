@@ -46,6 +46,9 @@ public class Client {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

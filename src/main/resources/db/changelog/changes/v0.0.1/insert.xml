@@ -33,6 +33,7 @@
             <column name="email" value="johndoe@example.com"/>
             <column name="address" value="123 Main St"/>
             <column name="phone" value="+1234567890"/>
+            <column name="password" value="$2a$05$wMZb87JBc7ZXLEYSa4rYsuNZ9bcfornhAgOWeA3Zefh/yxX0JSNbO"/>
             <column name="created_at" value="2023-09-05 12:00:00"/>
             <column name="updated_at" value="2023-09-05 12:00:00"/>
         </insert>
@@ -47,6 +48,7 @@
             <column name="email" value="janesmith@example.com"/>
             <column name="address" value="456 Elm St"/>
             <column name="phone" value="+9876543210"/>
+            <column name="password" value="$2a$05$wMZb87JBc7ZXLEYSa4rYsuNZ9bcfornhAgOWeA3Zefh/yxX0JSNbO"/>
             <column name="created_at" value="2023-09-05 13:00:00"/>
             <column name="updated_at" value="2023-09-05 13:00:00"/>
         </insert>

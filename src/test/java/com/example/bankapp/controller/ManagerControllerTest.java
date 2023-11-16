@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -28,6 +29,7 @@ class ManagerControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void deleteById() throws Exception {
         String mangerId = "1370ec78-5c28-46c3-b8dd-8ebee695daea";
         String result = mockMvc.perform(MockMvcRequestBuilders.get("/managers/" + mangerId))
@@ -45,6 +47,7 @@ class ManagerControllerTest {
     }
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void createManager() throws Exception {
         ManagerDTO managerDTO = new ManagerDTO();
         managerDTO.setId("1678babb-7f73-4eb7-8dd6-c1f9988b2606");
@@ -70,6 +73,7 @@ class ManagerControllerTest {
     }
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void updateManager() throws Exception {
         ManagerDTO managerDTO = new ManagerDTO();
         managerDTO.setFirstName("John");

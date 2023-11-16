@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,6 +29,7 @@ class TransactionControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void deleteTransaction() throws Exception {
         String transactionId = "18fbdb44-5563-47c0-b42e-20d5405e187d";
         String result = mockMvc.perform(MockMvcRequestBuilders.get("/transactions/" + transactionId))
@@ -45,6 +47,7 @@ class TransactionControllerTest {
     }
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void createTransaction() throws Exception {
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setDebitAccountName("988776544332");

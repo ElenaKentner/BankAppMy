@@ -2,10 +2,10 @@ INSERT INTO managers (id, first_name, last_name, status, created_at, updated_at)
 VALUES
     ('1370ec78-5c28-46c3-b8dd-8ebee695daea', 'Vasilev', 'Ivan', 'NEW', '2023-09-04 12:00:00', '2023-09-04 12:00:00');
 
-INSERT INTO clients (id, manager_id, status, tax_code, first_name, last_name, email, address, phone, created_at, updated_at)
+INSERT INTO clients (id, manager_id, status, tax_code, first_name, last_name, email, address, phone, password, created_at, updated_at)
 VALUES
-    ('c48a263c-5a20-413e-8c9c-d89d83b1ee41', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'NEW', '12345678', 'Vasily', 'Ivanov', 'ivan@gmail.com', 'Krakow, Kalina, 15', '4867538990', '2023-09-04 12:00:00', '2023-09-04 12:00:00'),
-    ('fee1a328-e29b-4541-9284-b7c679e8a58e', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'NEW', '98765432', 'Vasja', 'Petrov', 'petrov@gmail.com', 'Warshaw, Kalina, 11', '6789908643', '2023-10-04 12:00:00', '2023-10-04 12:00:00');
+    ('c48a263c-5a20-413e-8c9c-d89d83b1ee41', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'NEW', '12345678', 'Vasily', 'Ivanov', 'ivan@gmail.com', 'Krakow, Kalina, 15', '4867538990', '$2a$05$y6XduIfPLW0pvLsjJaAFxej3UbHAZneEPQiaV6ipO5aDWyA9UTxle', '2023-09-04 12:00:00', '2023-09-04 12:00:00'),
+    ('fee1a328-e29b-4541-9284-b7c679e8a58e', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'NEW', '98765432', 'Vasja', 'Petrov', 'petrov@gmail.com', 'Warshaw, Kalina, 11', '6789908643', '$2a$05$y6XduIfPLW0pvLsjJaAFxej3UbHAZneEPQiaV6ipO5aDWyA9UTxle', '2023-10-04 12:00:00', '2023-10-04 12:00:00');
 
 INSERT INTO accounts (id, client_id, status, currency_code, type, balance, name, created_at, updated_at)
 VALUES

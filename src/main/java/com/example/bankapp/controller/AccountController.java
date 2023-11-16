@@ -6,6 +6,7 @@ import com.example.bankapp.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -34,6 +35,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> findAccount(@PathVariable String id) {
         AccountDTO accountDTO = accountService.findAccountById(id);

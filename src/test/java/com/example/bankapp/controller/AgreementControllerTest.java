@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -29,6 +29,7 @@ class AgreementControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void create() throws Exception {
         AgreementDTO agreementDTO = new AgreementDTO();
         agreementDTO.setAccountId("11f7986c-c1d8-4231-838a-e84b17ccebdb");

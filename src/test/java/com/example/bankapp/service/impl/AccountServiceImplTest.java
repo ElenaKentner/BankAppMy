@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -53,6 +54,7 @@ class AccountServiceImplTest {
     }
 
     @Test
+    @WithUserDetails("ivan@gmail.com")
     void createAccount() {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");

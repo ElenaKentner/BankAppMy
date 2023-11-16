@@ -45,6 +45,7 @@
             <column name="email" type="VARCHAR(25)"/>
             <column name="address" type="VARCHAR(255)"/>
             <column name="phone" type="VARCHAR(25)"/>
+            <column name="password" type="VARCHAR(60)"/>
             <column name="created_at" type="TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP"/>
         </createTable>

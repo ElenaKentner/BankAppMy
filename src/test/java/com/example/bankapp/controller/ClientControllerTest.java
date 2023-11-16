@@ -1,6 +1,7 @@
 package com.example.bankapp.controller;
 
 import com.example.bankapp.dto.ClientDTO;
+import com.example.bankapp.dto.ErrorDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -29,7 +31,8 @@ class ClientControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void createClient() throws Exception {
+    @WithUserDetails("ivan@gmail.com")
+    void createClientPositiveTest() throws Exception {
         ClientDTO clientDTO = getClientDto();
         clientDTO.setId(null);
 
@@ -53,7 +56,8 @@ class ClientControllerTest {
     }
 
     @Test
-    void getById() throws Exception {
+    @WithUserDetails("ivan@gmail.com")
+    void getByIdTest() throws Exception {
         ClientDTO expected = getClientDto();
 
         MvcResult clientDtoMvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/clients/" +
@@ -69,7 +73,8 @@ class ClientControllerTest {
 
 
     @Test
-    void updateClient() throws Exception {
+    @WithUserDetails("ivan@gmail.com")
+    void updateClientTest() throws Exception {
         ClientDTO expected = getClientDto();
         ClientDTO clientDtoToUpdate = new ClientDTO();
         clientDtoToUpdate.setStatus("ACTIVE");
@@ -92,7 +97,8 @@ class ClientControllerTest {
     }
 
     @Test
-    void deleteClient() throws Exception {
+    @WithUserDetails("ivan@gmail.com")
+    void deleteClientTest() throws Exception {
         ClientDTO clientDTO = getClientDto();
 
         MvcResult clientDtoMvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/clients/" +
@@ -114,6 +120,51 @@ class ClientControllerTest {
                         clientDTO.getId()))
                 .andExpect(status().is(204))
                 .andReturn();
+    }
+
+    @Test
+    @WithUserDetails("ivan@gmail.com")
+    void createClientNegativeTest() throws Exception {
+        ClientDTO clientDTO = getClientDto();
+        clientDTO.setId(null);
+        clientDTO.setFirstName("Vasjaж");
+
+        String clientDTOString = objectMapper.writeValueAsString(clientDTO);
+
+        String errorDtoResult = mockMvc.perform(MockMvcRequestBuilders.post("/clients/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(clientDTOString))
+                .andExpect(status().is(400))
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        ErrorDTO result = objectMapper.readValue(errorDtoResult, ErrorDTO.class);
+
+        Assertions.assertEquals("first name must contain only latin alphabet", result.getMessage());
+
+    }
+
+    @Test
+    @WithUserDetails("ivan@gmail.com")
+    void createClientNegativeInternalServerErrorTest() throws Exception {
+        ClientDTO clientDTO = getClientDto();
+        clientDTO.setId(null);
+        clientDTO.setStatus("Error");
+
+        String clientDTOString = objectMapper.writeValueAsString(clientDTO);
+
+        String errorDtoResult = mockMvc.perform(MockMvcRequestBuilders.post("/clients/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(clientDTOString))
+                .andExpect(status().is(500))
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        ErrorDTO result = objectMapper.readValue(errorDtoResult, ErrorDTO.class);
+
+        Assertions.assertEquals("No enum constant com.example.bankapp.entity.enums.Status.Error",
+                result.getMessage());
+
     }
 
     private ClientDTO getClientDto() {
