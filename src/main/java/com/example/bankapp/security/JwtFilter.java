@@ -1,7 +1,5 @@
 package com.example.bankapp.security;
 
-import com.example.bankapp.entity.security.CustomUserDetails;
-import com.example.bankapp.service.security.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;

@@ -1,4 +1,4 @@
-package com.example.bankapp.service.security;
+package com.example.bankapp.security;
 
 import com.example.bankapp.entity.Client;
 import com.example.bankapp.entity.security.CustomUserDetails;
