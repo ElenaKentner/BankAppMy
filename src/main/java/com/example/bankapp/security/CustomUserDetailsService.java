@@ -1,7 +1,6 @@
 package com.example.bankapp.security;
 
 import com.example.bankapp.entity.Client;
-import com.example.bankapp.entity.security.CustomUserDetails;
 import com.example.bankapp.repository.ClientRepository;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
