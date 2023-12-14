@@ -3,8 +3,6 @@ package com.example.bankapp.controller;
 import com.example.bankapp.dto.AccountDTO;
 import com.example.bankapp.dto.ErrorDTO;
 import com.example.bankapp.entity.Account;
-import com.example.bankapp.entity.Client;
-import com.example.bankapp.entity.security.CustomUserDetails;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -13,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,7 +39,6 @@ class AccountControllerTest {
     @WithUserDetails("ivan@gmail.com")
     void createAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
         accountDTO.setType("CHECKING");
         accountDTO.setCurrencyCode("EUR");
 
@@ -56,11 +50,12 @@ class AccountControllerTest {
                 .andReturn();
 
         String accountResultJson = accountDtoResult.getResponse().getContentAsString();
-        Account accountResult = objectMapper.readValue(accountResultJson, Account.class);
+        AccountDTO accountResult = objectMapper.readValue(accountResultJson, AccountDTO.class);
 
         Assertions.assertEquals(201, accountDtoResult.getResponse().getStatus());
-        Assertions.assertEquals(accountDTO.getType(), accountResult.getType().toString());
-        Assertions.assertEquals(accountDTO.getCurrencyCode(), accountResult.getCurrencyCode().toString());
+        Assertions.assertEquals(accountDTO.getType(), accountResult.getType());
+        Assertions.assertEquals(accountDTO.getCurrencyCode(), accountResult.getCurrencyCode());
+        Assertions.assertEquals("Vasily Ivanov", accountResult.getOwnerFullName());
 
     }
 
@@ -68,7 +63,6 @@ class AccountControllerTest {
     @WithUserDetails("ivan@gmail.com")
     void deleteAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
         accountDTO.setType("CHECKING");
         accountDTO.setCurrencyCode("EUR");
 
@@ -100,22 +94,11 @@ class AccountControllerTest {
     }
 
     @Test
-//    @WithUserDetails("ivan@gmail.com")
+    @WithUserDetails("ivan@gmail.com")
     void findAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
         accountDTO.setType("CHECKING");
         accountDTO.setCurrencyCode("EUR");
-
-        Client client = new Client();
-        client.setEmail("ivan@gmail.com");
-
-        UserDetails userDetails = new CustomUserDetails(client);
-
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
-                null, userDetails.getAuthorities());
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
 
         String accountDtoString = objectMapper.writeValueAsString(accountDTO);
 
@@ -146,7 +129,6 @@ class AccountControllerTest {
     @WithUserDetails("ivan@gmail.com")
     void updateAccount() throws Exception {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
         accountDTO.setType("CHECKING");
         accountDTO.setCurrencyCode("EUR");
 
@@ -190,19 +172,18 @@ class AccountControllerTest {
        List<AccountDTO> expected = new ArrayList<>();
        AccountDTO expectedDTO1 = new AccountDTO();
        expectedDTO1.setId("e0a35315-4bb8-485a-a108-93b346ab452e");
-       expectedDTO1.setClientId("c48a263c-5a20-413e-8c9c-d89d83b1ee41");
        expectedDTO1.setCurrencyCode("USD");
        expectedDTO1.setType("SAVINGS");
        expectedDTO1.setBalance("1000.00");
        expectedDTO1.setName("988776544332");
-       expectedDTO1.setProductName("name");
+       expectedDTO1.setProductName("name1");
        expectedDTO1.setInterestRate("1.5000");
        expectedDTO1.setOwnerFullName("Vasily Ivanov");
 
        expected.add(expectedDTO1);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/accounts/by-product-name")
-                        .param("productName", "name"))
+                        .param("productName", "name1"))
                 .andExpect(status().isOk())
                 .andReturn();
 

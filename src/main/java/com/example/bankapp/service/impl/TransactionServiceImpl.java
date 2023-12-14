@@ -4,6 +4,9 @@ import com.example.bankapp.dto.TransactionDTO;
 import com.example.bankapp.entity.Account;
 import com.example.bankapp.entity.Transaction;
 import com.example.bankapp.entity.enums.Status;
+import com.example.bankapp.exception.CurrencyCheckException;
+import com.example.bankapp.exception.InvalidAmountException;
+import com.example.bankapp.exception.NotEnoughMoneyException;
 import com.example.bankapp.mapper.TransactionMapper;
 import com.example.bankapp.repository.AccountRepository;
 import com.example.bankapp.repository.TransactionRepository;
@@ -13,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -40,33 +44,46 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public TransactionDTO createTransaction(TransactionDTO transactionDTO) {
-        Transaction transaction = transactionMapper.mapToEntity(transactionDTO);
         Account debitAccount = accountRepository.findByName(transactionDTO.getDebitAccountName())
                 .orElseThrow(() -> new EntityNotFoundException("account not found"));
         Account creditAccount = accountRepository.findByName(transactionDTO.getCreditAccountName())
                 .orElseThrow(() -> new EntityNotFoundException("account not found"));
 
-        if (debitAccount.getBalance().compareTo(transaction.getAmount()) < 0) {
-            throw new RuntimeException("not enough money");
-        }
+        checkValidation(transactionDTO, debitAccount, creditAccount);
+
+        Transaction transaction = transactionMapper.mapToEntity(transactionDTO);
 
         debitAccount.setBalance(debitAccount.getBalance().subtract(transaction.getAmount()));
         creditAccount.setBalance(creditAccount.getBalance().add(transaction.getAmount()));
-
         debitAccount.setUpdatedAt(LocalDateTime.now());
         creditAccount.setUpdatedAt(LocalDateTime.now());
-
-        accountRepository.save(debitAccount);
-        accountRepository.save(creditAccount);
-
         transaction.setStatus(Status.SUCCESS);
         transaction.setCreatedAt(LocalDateTime.now());
         transaction.setDebitAccount(debitAccount);
         transaction.setCreditAccount(creditAccount);
 
+        accountRepository.save(debitAccount);
+        accountRepository.save(creditAccount);
         transactionRepository.save(transaction);
 
         return transactionMapper.mapToDto(transaction);
+    }
 
+    private static void checkValidation(TransactionDTO transactionDTO, Account debitAccount, Account creditAccount) {
+        Double amountDouble = null;
+        try {
+            amountDouble = Double.parseDouble(transactionDTO.getAmount());
+        } catch (NumberFormatException exception) {
+            throw new InvalidAmountException("amount must contain only numbers");
+        }
+        if (amountDouble <= 0) {
+            throw new InvalidAmountException("amount must be positive");
+        }
+        if (debitAccount.getBalance().compareTo(new BigDecimal(amountDouble)) < 0) {
+            throw new NotEnoughMoneyException("you do not have enough funds to transfer");
+        }
+        if (debitAccount.getCurrencyCode() != creditAccount.getCurrencyCode()) {
+            throw new CurrencyCheckException("a transaction can only be made with one currency");
+        }
     }
 }

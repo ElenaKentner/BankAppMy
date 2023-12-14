@@ -10,11 +10,13 @@ VALUES
 INSERT INTO accounts (id, client_id, status, currency_code, type, balance, name, created_at, updated_at)
 VALUES
     ('e0a35315-4bb8-485a-a108-93b346ab452e','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '988776544332', '2023-09-05 12:00:00', '2023-09-05 12:00:00'),
-    ('11f7986c-c1d8-4231-838a-e84b17ccebdb','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '657483958765', '2023-09-05 12:00:00', '2023-09-05 12:00:00');
+    ('11f7986c-c1d8-4231-838a-e84b17ccebdb','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'USD', 'SAVINGS', '1000.00', '657483958765', '2023-09-05 12:00:00', '2023-09-05 12:00:00'),
+    ('c63c94a0-ecdb-4d2c-b0a1-34367eec298f','c48a263c-5a20-413e-8c9c-d89d83b1ee41', 'ACTIVE', 'PLN', 'SAVINGS', '2000.00', '657483958766', '2023-09-05 12:00:00', '2023-09-05 12:00:00');
 
 INSERT INTO products (id, manager_id, name, status, currency_code, interest_rate, min_limit, created_at, updated_at)
 VALUES
-    ('afc9da7c-299d-4dd1-93bc-d71de8e5d1a6', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'name', 'ACTIVE', 'USD', '1.5', '100', '2023-10-05 12:00:00', '2023-10-05 12:00:00');
+    ('afc9da7c-299d-4dd1-93bc-d71de8e5d1a6', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'name1', 'ACTIVE', 'USD', '1.5', '100', '2023-10-05 12:00:00', '2023-10-05 12:00:00'),
+    ('4222e119-4a2b-4a6a-ba25-c263aa3b30a5', '1370ec78-5c28-46c3-b8dd-8ebee695daea', 'name2', 'ACTIVE', 'USD', '0.5', '200', '2023-10-05 12:00:00', '2023-10-05 12:00:00');
 
 INSERT INTO agreements (id, account_id, product_id, status, created_at, updated_at)
 VALUES

@@ -15,7 +15,6 @@ public interface AccountMapper {
     @Mapping(source = "agreement.product.name", target = "productName")
     @Mapping(source = "agreement.product.interestRate", target = "interestRate")
     @Mapping(source = "client", target = "ownerFullName", qualifiedByName = "getFullName")
-    @Mapping(source = "client.id", target = "clientId")
     AccountDTO mapToDto(Account account);
 
     @Mapping(target = "id", ignore = true)

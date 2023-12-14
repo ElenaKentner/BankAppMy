@@ -8,13 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CustomUserDetails implements UserDetails {
-
-    private final Client client;
-
-    public CustomUserDetails(Client client) {
-        this.client = client;
-    }
+public record CustomUserDetails(Client client) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -23,7 +17,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return client.getPassword();
+        return client.getHashedPassword();
     }
 
     @Override
@@ -49,9 +43,5 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public Client getClient() {
-        return client;
     }
 }

@@ -80,7 +80,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Client> clientOptional = clientRepository.findByEmail(email);
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
-            if (passwordEncoder.matches(password, client.getPassword())) {
+            if (passwordEncoder.matches(password, client.getHashedPassword())) {
                 return client;
             }
         }

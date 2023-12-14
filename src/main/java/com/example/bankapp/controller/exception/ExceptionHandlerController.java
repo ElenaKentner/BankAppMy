@@ -1,6 +1,9 @@
 package com.example.bankapp.controller.exception;
 
 import com.example.bankapp.dto.ErrorDTO;
+import com.example.bankapp.exception.CurrencyCheckException;
+import com.example.bankapp.exception.InvalidAmountException;
+import com.example.bankapp.exception.NotEnoughMoneyException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,22 @@ public class ExceptionHandlerController {
                 exception.getMessage(),
                 Arrays.toString(exception.getStackTrace()));
         return new ResponseEntity<>(errorDto, HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(NotEnoughMoneyException.class)
+    public ResponseEntity<ErrorDTO> handleNotEnoughMoneyException(NotEnoughMoneyException notEnoughMoneyException) {
+        ErrorDTO errorDto = new ErrorDTO(HttpStatus.NOT_ACCEPTABLE,
+                notEnoughMoneyException.getMessage(),
+                Arrays.toString(notEnoughMoneyException.getStackTrace()));
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler({CurrencyCheckException.class, InvalidAmountException.class})
+    public ResponseEntity<ErrorDTO> handleCurrencyCheckException(RuntimeException runtimeException) {
+        ErrorDTO errorDto = new ErrorDTO(HttpStatus.BAD_REQUEST,
+                runtimeException.getMessage(),
+                Arrays.toString(runtimeException.getStackTrace()));
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

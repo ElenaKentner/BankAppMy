@@ -47,7 +47,7 @@ public class Client {
     private String phone;
 
     @Column(name = "password")
-    private String password;
+    private String hashedPassword;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

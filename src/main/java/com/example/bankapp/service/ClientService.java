@@ -15,5 +15,6 @@ public interface ClientService {
 
     void deleteClient(String id);
 
+
     Client findByEmailWithPassword(String email, String password);
 }

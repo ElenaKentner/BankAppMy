@@ -1,6 +1,7 @@
 package com.example.bankapp.controller;
 
 import com.example.bankapp.dto.AccountDTO;
+import com.example.bankapp.dto.ErrorDTO;
 import com.example.bankapp.dto.TransactionDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -96,5 +97,73 @@ class TransactionControllerTest {
 
         Assertions.assertEquals(debitBalanceBefore - amount, debitBalanceAfter);
         Assertions.assertEquals(creditBalanceBefore + amount, creditBalanceAfter);
+    }
+
+    @Test
+    @WithUserDetails("ivan@gmail.com")
+    void createTransactionNegativeTestNotEnoughMoney() throws Exception {
+        TransactionDTO transactionDTO = new TransactionDTO();
+        transactionDTO.setDebitAccountName("988776544332");
+        transactionDTO.setCreditAccountName("657483958765");
+        transactionDTO.setAmount("5000");
+        transactionDTO.setDescription("qwewaaszd");
+
+        ErrorDTO errorDTO = createResponseErrorDTO(transactionDTO, 406);
+        Assertions.assertEquals("you do not have enough funds to transfer", errorDTO.getMessage());
+    }
+
+    @Test
+    @WithUserDetails("ivan@gmail.com")
+    void createTransactionNegativeTestCurrencyCheck() throws Exception {
+        TransactionDTO transactionDTO = new TransactionDTO();
+        transactionDTO.setDebitAccountName("988776544332");
+        transactionDTO.setCreditAccountName("657483958766");
+
+        transactionDTO.setAmount("1000");
+        transactionDTO.setDescription("qwewaaszd");
+
+        ErrorDTO errorDTO = createResponseErrorDTO(transactionDTO, 400);
+        Assertions.assertEquals("a transaction can only be made with one currency", errorDTO.getMessage());
+    }
+
+    @Test
+    @WithUserDetails("ivan@gmail.com")
+    void createTransactionNegativeTestAmountNotNumber() throws Exception {
+        TransactionDTO transactionDTO = new TransactionDTO();
+        transactionDTO.setDebitAccountName("988776544332");
+        transactionDTO.setCreditAccountName("657483958766");
+
+        transactionDTO.setAmount("abc");
+        transactionDTO.setDescription("qwewaaszd");
+
+        ErrorDTO errorDTO = createResponseErrorDTO(transactionDTO, 400);
+        Assertions.assertEquals("amount must contain only numbers", errorDTO.getMessage());
+    }
+
+    @Test
+    @WithUserDetails("ivan@gmail.com")
+    void createTransactionNegativeTestAmountNotPositive() throws Exception {
+        TransactionDTO transactionDTO = new TransactionDTO();
+        transactionDTO.setDebitAccountName("988776544332");
+        transactionDTO.setCreditAccountName("657483958766");
+
+        transactionDTO.setAmount("-100");
+        transactionDTO.setDescription("qwewaaszd");
+
+        ErrorDTO errorDTO = createResponseErrorDTO(transactionDTO, 400);
+        Assertions.assertEquals("amount must be positive", errorDTO.getMessage());
+    }
+
+    private ErrorDTO createResponseErrorDTO(TransactionDTO transactionDTO, int status) throws Exception {
+        String transactionDtoString = objectMapper.writeValueAsString(transactionDTO);
+
+        String response = mockMvc.perform(MockMvcRequestBuilders.post("/transactions/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(transactionDtoString))
+                .andExpect(status().is(status))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        return objectMapper.readValue(response, ErrorDTO.class);
     }
 }

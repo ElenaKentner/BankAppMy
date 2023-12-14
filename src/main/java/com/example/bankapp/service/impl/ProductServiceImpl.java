@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,6 +33,13 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(existingProduct);
 
         return productMapper.mapToDto(existingProduct);
+    }
+
+    @Transactional
+    @Override
+    public List<ProductDTO> getAllActive() {
+        List<Product> productList = productRepository.findAllActive();
+        return productMapper.mapToListDto(productList);
     }
 }
 
